@@ -1,0 +1,8 @@
+{
+  "name": "Hotjar Dev Task - James Livermont",
+  "description": "Embeddable survey widget",
+  "image": "heroku/python",
+  "repository": "https://github.com/jllivermont/hotjar-task",
+  "keywords": ["python"],
+  "addons": [ "heroku-postgresql" ]
+}
