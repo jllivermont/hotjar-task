@@ -1,1 +1,1 @@
-web: gunicorn survey.server:app --log-file -
+web: gunicorn survey.router:app --log-file -
