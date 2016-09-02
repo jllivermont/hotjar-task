@@ -4,8 +4,9 @@ import json
 
 class NewSurveyResource(object):
     def on_post(self, req, resp):
-        json_payload = json.loads(req.stream.read(), encoding='utf-8')
-        resp.body = json_payload
+        req_payload = json.loads(req.stream.read().decode("utf-8"))
+        req_payload["name"] = "james"
+        resp.body = json.dumps(req_payload)
         resp.content_type = 'application/json'
         resp.status = falcon.HTTP_200
 
@@ -22,5 +23,5 @@ class SurveyResource(object):
 
 
 app = application = falcon.API()
-app.add_route("/survey", NewSurveyResource)
-app.add_route("/survey/{id}", SurveyResource)
+app.add_route("/survey", NewSurveyResource())
+app.add_route("/survey/{id}", SurveyResource())

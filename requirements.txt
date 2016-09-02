@@ -1,5 +1,8 @@
 falcon==1.0.0
+flake8==2.4.1
 gunicorn==19.6.0
+peewee==2.8.3
 psycopg2==2.6.1
+pytest>=3.0.2`
 python-mimeparse==1.5.2
 virtualenv==15.0.3
