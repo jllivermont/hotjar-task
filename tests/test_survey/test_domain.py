@@ -45,6 +45,17 @@ def test_multiple_updates():
     assert response_dict["age"] == 45
 
 
+def test_update_ignores_extra_keys():
+    input_dict = {"name": "Julius Caesar", "email": "jc@rome.gov"}
+    id = domain.create_response(input_dict)
+
+    update_dict = {"address": "The Palace, 1 Appian Way, Rome", "foo": "bar"}
+    domain.update_response(id, update_dict)
+
+    response_dict = domain.get_response(id)
+    assert "foo" not in response_dict
+
+
 def test_finish_on_incomplete_response_raises_error():
     input_dict = {"name": "bob", "email": "bob@asdfa.org"}
     id = domain.create_response(input_dict)
