@@ -2,12 +2,17 @@ import os
 
 from peewee import *  # noqa
 
-db = PostgresqlDatabase(
+
+test_db = SqliteDatabase(':memory:')
+
+prod_db = PostgresqlDatabase(
     os.environ.get("DB_NAME"),
     user=os.environ.get("DB_USER"),
     password=os.environ.get("DB_PASSWORD"),
     host=os.environ.get("DB_HOST"),
 )
+
+db = prod_db if "USE_PROD_DB" in os.environ else test_db
 
 
 class SurveyResponse(Model):
@@ -24,3 +29,6 @@ class SurveyResponse(Model):
 
     class Meta:
         database = db
+
+# Create the table if it doesn't exist
+db.create_tables([SurveyResponse], safe=True)
