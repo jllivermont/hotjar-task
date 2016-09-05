@@ -2,8 +2,13 @@ import os
 
 from peewee import *  # noqa
 
+TEST_DB_FILE = "local.db"
 
-test_db = SqliteDatabase(':memory:')
+# Wipe the local test DB before each run
+if os.path.exists(TEST_DB_FILE):
+    os.remove(TEST_DB_FILE)
+
+test_db = SqliteDatabase(TEST_DB_FILE)
 
 prod_db = PostgresqlDatabase(
     os.environ.get("DB_NAME"),
@@ -13,6 +18,7 @@ prod_db = PostgresqlDatabase(
 )
 
 db = prod_db if "USE_PROD_DB" in os.environ else test_db
+db_type = "prod" if "USE_PROD_DB" in os.environ else "test"
 
 
 class SurveyResponse(Model):
@@ -30,5 +36,16 @@ class SurveyResponse(Model):
     class Meta:
         database = db
 
-# Create the table if it doesn't exist
-db.create_tables([SurveyResponse], safe=True)
+
+def db_init():
+    db.connect()
+    if db_type == "test":
+        db.create_tables([SurveyResponse], True)
+
+
+def db_close():
+    if not db.is_closed():
+        db.close()
+
+
+db_init()

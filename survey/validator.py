@@ -82,6 +82,9 @@ def _validate_favorite_book(favorite_book):
 
 
 def _validate_favorite_colors(favorite_colors):
+    if "," in favorite_colors:
+        favorite_colors = favorite_colors.split(",")
+
     if isinstance(favorite_colors, list) or isinstance(favorite_colors, tuple):
         for color in favorite_colors:
             _check_in_enum("favorite_colors", color, COLORS)
@@ -89,7 +92,7 @@ def _validate_favorite_colors(favorite_colors):
         _check_in_enum("favorite_colors", favorite_colors, COLORS)
 
 
-def validate_field(field_name, field_value):
+def _validate_field(field_name, field_value):
     """Validates the normalized value for the specified field"""
 
     func_name = "_validate_{}".format(field_name)
@@ -99,3 +102,25 @@ def validate_field(field_name, field_value):
 
     # Invoke the validation function
     globals()[func_name](field_value)
+
+
+def _validate_mandatory_fields(data, required_fields):
+    """Ensure that all of the mandatory fields are in the input data"""
+    for field in required_fields:
+        if field not in data:
+            raise ValidationError("Missing mandatory field {}".format(field))
+
+
+def validate(data, required_fields=None):
+    """Validates each key-value pair
+
+    Args:
+        data (dict): Incoming data from request
+        required_fields (list): Mandatory fields
+    """
+
+    if required_fields is not None:
+        _validate_mandatory_fields(data, required_fields)
+
+    for key, value in data.items():
+        _validate_field(key, value)

@@ -1,7 +1,7 @@
 import pytest
 
 from survey.error import ValidationError
-from survey.validator import validate_field
+from survey.validator import _validate_field
 
 
 @pytest.mark.parametrize("field,value,error_expected", [
@@ -19,12 +19,12 @@ from survey.validator import validate_field
     ("favorite_colors", ("blue", "bird"), True),
 
 ])
-def test_validate_field(field, value, error_expected):
+def test__validate_field(field, value, error_expected):
     if error_expected:
         with pytest.raises(ValidationError):
-            validate_field(field, value)
+            _validate_field(field, value)
     else:
-        validate_field(field, value)
+        _validate_field(field, value)
 
 
 @pytest.mark.parametrize("email,error_expected", [
@@ -36,6 +36,6 @@ def test_validate_field(field, value, error_expected):
 def test_validate_email(email, error_expected):
     if error_expected:
         with pytest.raises(ValidationError):
-            validate_field("email", email)
+            _validate_field("email", email)
     else:
-        validate_field("email", email)
+        _validate_field("email", email)
