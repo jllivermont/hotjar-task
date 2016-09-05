@@ -61,7 +61,7 @@ def update_response(id, data):
     resp = SurveyResponse.get(SurveyResponse.id == id)
 
     for field in SurveyResponse._meta.sorted_field_names:
-        if field != "email" and field in data:
+        if field in data:
             setattr(resp, field, data[field])
 
     resp.save()

@@ -17,10 +17,10 @@ def _decode(req, resp):
         resp.status = falcon.HTTP_500
 
 
-def _validate(data, resp, mandatory_fields=None):
+def _validate(data, resp, mandatory_fields=None, forbidden_fields=None):
     try:
         data = normalize(data)
-        validate(data, mandatory_fields)
+        validate(data, mandatory_fields, forbidden_fields)
         return data
     except ValidationError as e:
         resp.body = json.dumps({"error": e.args[0]})
@@ -63,7 +63,7 @@ class NewSurveyResource(object):
         if data is not None:
             # Normalize and validate the input data
             mandatory_fields = ("name", "email")
-            data = _validate(data, resp, mandatory_fields)
+            data = _validate(data, resp, mandatory_fields=mandatory_fields)
 
         if resp.status == falcon.HTTP_201:
             try:
@@ -135,7 +135,8 @@ class SurveyResource(object):
             data = _decode(req, resp)
             if data is not None:
                 # Normalize and validate the input data
-                data = _validate(data, resp)
+                forbidden_fields = ("email",)
+                data = _validate(data, resp, forbidden_fields=forbidden_fields)
 
         if resp.status == falcon.HTTP_200:
             try:

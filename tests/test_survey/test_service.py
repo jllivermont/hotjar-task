@@ -90,7 +90,7 @@ def test_get_response_returns_200_on_success(test_webserver):
 
 # UPDATE RESPONSE
 def test_update_response_with_non_existant_id_returns_400(test_webserver):
-    update_dict = {"name": "babs bunny", "email": "babs@w3c.org"}
+    update_dict = {"name": "babs bunny", "address": "4 Dame Lane"}
     resp = requests.put(
         url=test_webserver.url +
         "/survey/238298239",
@@ -113,9 +113,7 @@ def test_update_response_returns_200_on_success(test_webserver):
     # Update survey
     input_dict["name"] = "Jason Voorhees"
     input_dict["favorite_colors"] = " BLUE, green, BrOwN "
-
-    # Check that email addresses can't be updated post-creation
-    input_dict["email"] = "biblo@shire.org"
+    del input_dict["email"]
 
     resp = requests.put(
         url=test_webserver.url +
@@ -132,3 +130,27 @@ def test_update_response_returns_200_on_success(test_webserver):
     assert updated_response["name"] == "Jason Voorhees"
     assert updated_response["email"] == "jason@friday13.org"
     assert updated_response["favorite_colors"] == "blue,green,brown"
+
+
+def test_update_response_with_email_returns_400(test_webserver):
+    # Create survey
+    input_dict = {"name": "Elmer Fudd", "email": "elmer@looney.org"}
+    resp = requests.post(
+        url=test_webserver.url +
+        "/survey",
+        json=input_dict,
+        headers=REQUEST_HEADERS)
+    id = str(resp.json()["id"])
+
+    # Update survey
+    input_dict["name"] = "Daffy Duck"
+    input_dict["email"] = "daffy@looney.org"
+
+    resp = requests.put(
+        url=test_webserver.url +
+        "/survey/" + id,
+        json=input_dict,
+        headers=REQUEST_HEADERS)
+
+    print(resp.json())
+    assert resp.status_code == 400
