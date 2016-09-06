@@ -60,7 +60,7 @@ curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"finished": "tr
 [falcon]: <https://falcon.readthedocs.io/en/stable/>
 [github]: <https://github.com/jllivermont/hotjar-task>
 [gunicorn]: <http://gunicorn.org/>
-[heroku]: <hotjar-task.herokuapp.com>
+[heroku]: <https://hotjar-task.herokuapp.com>
 [jquery-steps]: <http://www.jquery-steps.com/>
 [peewee]: <http://docs.peewee-orm.com/en/latest/>
 [postgresql]: <https://www.postgresql.org/>
