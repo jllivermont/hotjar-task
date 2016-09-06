@@ -17,7 +17,7 @@ $ curl -X GET https://hotjar-task.herokuapp.com/survey/5
 ```
 
 # API Documentation
-## POST /survey
+## POST /survey (CREATE)
 * Required request headers: `application/json`
 * Required request body parameters: `name` and `email`
 * Example request payload: `{"name": "Jon Snow", "email": "jon@got.com"}`
@@ -26,7 +26,7 @@ $ curl -X GET https://hotjar-task.herokuapp.com/survey/5
 * Example response payload: `{"id": 293292}` 
 * HTTP response codes: `201`, `400`, `409`, `500`
 
-## PUT /survey/{id}
+## PUT /survey/{id} (UPDATE)
 * Required request headers: `application/json`
 * Allowed request body parameters: `name`, `age`, `about_me`, `address`, `gender`, `favorite_book` and `favorite_colors`
 * Example request payload: `{"name": "Jon Snow", "address": "The Wall, The North, Westeros", "favorite_colors": "black,red,purple"}`
@@ -35,7 +35,7 @@ $ curl -X GET https://hotjar-task.herokuapp.com/survey/5
 * Example response payload: None
 * HTTP response codes: `200`, `400`, `500`
 
-## GET /survey/{id}
+## GET /survey/{id} (READ)
 * Required request headers: None
 * Allowed request body parameters: None
 * Example request payload: None
