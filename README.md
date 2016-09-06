@@ -5,11 +5,15 @@ The goal of this project was to develop an embeddable survey widget and the full
 Here is an example of how a survey response can be created, queried, updated and completed using command line curl:
 
 ```bash
-curl -v -X POST https://hotjar-task.herokuapp.com/survey -d '{"name": "Vladimir Putin", "email": "vlad@russia.ru"}' -H 'Content-Type: application/json'
-curl -v -X GET https://hotjar-task.herokuapp.com/survey/111
-curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"favorite_book": "Dante's Inferno"}' -H 'Content-Type: application/json'
-curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"age": "28", "about_me": "I love chicken wings"}' -H 'Content-Type: application/json'
-curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"finished": "true"}' -H 'Content-Type: application/json'
+$ curl -X POST https://hotjar-task.herokuapp.com/survey -d '{"name": "Vladimir Putin", "email": "vlad@russia.ru"}' -H 'Content-Type: application/json'
+{"id": 5}
+$ curl -X GET https://hotjar-task.herokuapp.com/survey/5
+{"about_me": null, "id": 5, "address": null, "finished": false, "name": "Vladimir Putin", "email": "vlad@russia.ru", "age": null, "favorite_colors": null, "favorite_book": null, "gender": null} 
+$ curl -X PUT https://hotjar-task.herokuapp.com/survey/5 -d '{"favorite_book": "Inferno"}' -H 'Content-Type: application/json'
+$ curl -X PUT https://hotjar-task.herokuapp.com/survey/5 -d '{"age": "28", "about_me": "I love chicken wings"}' -H 'Content-Type: application/json'
+$ curl -X PUT https://hotjar-task.herokuapp.com/survey/5 -d '{"finished": "true"}' -H 'Content-Type: application/json'
+$ curl -X GET https://hotjar-task.herokuapp.com/survey/5
+{"about_me": "I love chicken wings", "id": 5, "address": null, "finished": true, "name": "Vladimir Putin", "email": "vlad@russia.ru", "age": 28, "favorite_colors": null, "favorite_book": "Inferno", "gender": null}
 ```
 
 # API Documentation
