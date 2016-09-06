@@ -3,6 +3,7 @@ The goal of this project was to develop an embeddable survey widget and the full
 
 # Quickstart
 Here is an example of how a survey response can be created, queried, updated and completed using command line curl:
+
 ```bash
 curl -v -X POST https://hotjar-task.herokuapp.com/survey -d '{"name": "Vladimir Putin", "email": "vlad@russia.ru"}' -H 'Content-Type: application/json'
 curl -v -X GET https://hotjar-task.herokuapp.com/survey/111
@@ -10,6 +11,7 @@ curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"favorite_book"
 curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"age": "28", "about_me": "I love chicken wings"}' -H 'Content-Type: application/json'
 curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"finished": "true"}' -H 'Content-Type: application/json'
 ```
+
 # API Documentation
 ## POST /survey
 * Required request headers: `application/json`
@@ -19,6 +21,7 @@ curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"finished": "tr
 * Response body parameters: `id`
 * Example response payload: `{"id": 293292}` 
 * HTTP response codes: `201`, `400`, `409`, `500`
+
 ## PUT /survey/{id}
 * Required request headers: `application/json`
 * Allowed request body parameters: `name`, `age`, `about_me`, `address`, `gender`, `favorite_book` and `favorite_colors`
@@ -27,6 +30,7 @@ curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"finished": "tr
 * Response body parameters: None
 * Example response payload: None
 * HTTP response codes: `200`, `400`, `500`
+
 ## GET /survey/{id}
 * Required request headers: None
 * Allowed request body parameters: None
@@ -42,8 +46,10 @@ curl -v -X PUT https://hotjar-task.herokuapp.com/survey/111 -d '{"finished": "tr
 - [peewee] - ORM
 - [falcon] - WSGI-compatible web framework
 - [gunicorn] -  HTTP Server
+
 ## Front-end Technology Stack
 - [jquery-steps]: JQuery-based, HTML5-compliant form wizard
+
 ## Managed services
 - [heroku] - Cloud hosting
 - [github] - Source control
