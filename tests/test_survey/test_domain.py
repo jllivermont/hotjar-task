@@ -59,7 +59,7 @@ def test_update_ignores_extra_keys():
 def test_finish_on_incomplete_response_raises_error():
     input_dict = {"name": "bob", "email": "bob@asdfa.org"}
     id = domain.create_response(input_dict)
-    with pytest.raises(AssertionError):
+    with pytest.raises(RuntimeError):
         domain.finish(id)
 
 

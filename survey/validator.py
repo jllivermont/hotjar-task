@@ -3,6 +3,7 @@ from survey.models import SurveyResponse
 
 from validate_email import validate_email
 
+BOOLEAN = (True, False)
 GENDERS = ("male", "female")
 COLORS = (
     "red",
@@ -90,6 +91,10 @@ def _validate_favorite_colors(favorite_colors):
             _check_in_enum("favorite_colors", color, COLORS)
     else:
         _check_in_enum("favorite_colors", favorite_colors, COLORS)
+
+
+def _validate_finished(finished):
+    _check_in_enum("finished", finished, BOOLEAN)
 
 
 def _validate_field(field_name, field_value):

@@ -1,7 +1,7 @@
 import pytest
 
 from pytest_localserver.http import WSGIServer
-from survey.router import app
+from survey.api import app
 
 
 @pytest.yield_fixture

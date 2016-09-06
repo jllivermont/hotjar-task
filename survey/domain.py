@@ -61,10 +61,13 @@ def update_response(id, data):
     resp = SurveyResponse.get(SurveyResponse.id == id)
 
     for field in SurveyResponse._meta.sorted_field_names:
-        if field in data:
+        if field in data and field != "finished":
             setattr(resp, field, data[field])
 
     resp.save()
+
+    if "finished" in data:
+        finish(id)
 
 
 def finish(id):
@@ -81,7 +84,7 @@ def finish(id):
     for field_name in ("name", "email", "age", "about_me"):
         field = getattr(resp, field_name, None)
         if field is None:
-            raise AssertionError(error_msg.format(resp.id, field_name))
+            raise RuntimeError(error_msg.format(resp.id, field_name))
 
     resp.finished = True
     resp.save()

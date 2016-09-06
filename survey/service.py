@@ -145,6 +145,9 @@ class SurveyResource(object):
                 resp.body = json.dumps(
                     {"error": "Specified ID does not exist"})
                 resp.status = falcon.HTTP_400
+            except RuntimeError as e:
+                resp.status = falcon.HTTP_400
+                resp.body = json.dumps({"error": e.args[0]})
             except Exception:
                 resp.status = falcon.HTTP_500
                 resp.body = json.dumps(

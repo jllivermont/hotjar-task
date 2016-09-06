@@ -152,5 +152,34 @@ def test_update_response_with_email_returns_400(test_webserver):
         json=input_dict,
         headers=REQUEST_HEADERS)
 
-    print(resp.json())
     assert resp.status_code == 400
+    assert resp.json() == {
+        'error': 'Field email is not allowed for this operation'}
+
+
+def test_update_response_to_finish_unfinished_survey_returns_400(
+        test_webserver):
+    # Create survey
+    input_dict = {"name": "Peter Parker", "email": "peter@marvel.com"}
+    resp = requests.post(
+        url=test_webserver.url +
+        "/survey",
+        json=input_dict,
+        headers=REQUEST_HEADERS)
+    id = str(resp.json()["id"])
+
+    # Update survey
+    input_dict["name"] = "Daffy Duck"
+    input_dict["finished"] = "true"
+    input_dict["about_me"] = "Flying kites"
+    del input_dict["email"]
+
+    resp = requests.put(
+        url=test_webserver.url +
+        "/survey/" + id,
+        json=input_dict,
+        headers=REQUEST_HEADERS)
+
+    assert resp.status_code == 400
+    assert "is missing field age; can't mark as finished" in resp.json()[
+        "error"]

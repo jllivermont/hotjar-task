@@ -29,8 +29,11 @@ def normalize(data):
         elif key in ("gender", "favorite_colors"):
             value = value.lower()
 
-        if key in ("email", "favorite_colors"):
+        if key in ("email", "favorite_colors", "finished"):
             value = value.replace(" ", "")
+
+        if key == "finished":
+            value = bool(value.capitalize())
 
         normalized_data[key] = value
 

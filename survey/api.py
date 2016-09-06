@@ -18,3 +18,4 @@ app = application = falcon.API(middleware=[
 
 app.add_route("/survey", NewSurveyResource())
 app.add_route("/survey/{id}", SurveyResource())
+app.add_route("/survey/{id}/finish", SurveyResource())
