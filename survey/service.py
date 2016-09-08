@@ -155,23 +155,26 @@ class SurveyResource(object):
                     {"error": "Unable to persist updated response"})
 
 
-class LoaderResource(object):
-
+class StaticResource(object):
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
-        resp.content_type = 'application/json'
+        resp.content_type = self.content_type
 
-        file_path = os.path.join(os.environ["STATIC_CONTENT_PATH"], "loader.js")
-        with open(file_path, 'r') as f:
+        path = os.path.join(os.environ["STATIC_CONTENT_PATH"], self.file_name)
+        with open(path, 'r') as f:
             resp.body = f.read()
+
+
+class LoaderResource(StaticResource):
+    content_type = "application/json"
+    file_name = "loader.js"
 
 
 class WidgetResource(object):
+    content_type = "text/html"
+    file_name = "widget.html"
 
-    def on_get(self, req, resp):
-        resp.status = falcon.HTTP_200
-        resp.content_type = 'text/html'
 
-        file_path = os.path.join(os.environ["STATIC_CONTENT_PATH"], "widget.html")
-        with open(file_path, 'r') as f:
-            resp.body = f.read()
+class StylesheetResource(object):
+    content_type = "test/css"
+    file_name = "stylesheet.css"
