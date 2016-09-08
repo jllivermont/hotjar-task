@@ -77,7 +77,7 @@ function load_remote_scripts() {
 function _load_remote_css(url) {
   var link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = '';
+  link.href = url;
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
