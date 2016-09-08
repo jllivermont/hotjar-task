@@ -170,11 +170,11 @@ class LoaderResource(StaticResource):
     file_name = "loader.js"
 
 
-class WidgetResource(object):
+class WidgetResource(StaticResource):
     content_type = "text/html"
     file_name = "widget.html"
 
 
-class StylesheetResource(object):
+class StylesheetResource(StaticResource):
     content_type = "test/css"
     file_name = "stylesheet.css"
