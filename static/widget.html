@@ -1,132 +1,94 @@
-<html>
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap-wizard/1.2/jquery.bootstrap.wizard.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      div#widget { width: 535px; height: 500px; }
-      h3 { padding-top: 5px;  padding-bottom: 15px; }
-      label { font-size: 20px; font-weight: bold; margin-top: 5px;  margin-bottom: 10px; margin-right: 10px; text-align: right; display:block; }
-      input { width: 100%; padding-left: 10px; margin-top: 5px;  margin-bottom: 10px; padding-right: 10px; border-radius: 7px; }
-      textarea { width: 100%; padding-left: 10px; margin-top: 5px;  margin-bottom: 10px; padding-right: 10px; border-radius: 7px; }
-      select { width: 100%; margin-top: 5px;  margin-bottom: 10px; border-radius: 7px; }
-      table { width: 100%; }
-      .disabled { visibility: hidden; }
-    </style>
-  </head>
-  <body>
-    <div id='widget' class='container'>
-      <div id="rootwizard">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div>
-              <ul>
-                <li id="intro"><a href="#tab1" data-toggle="tab">Introduction</a></li>
-                <li id="name" class="disabled"><a href="#tab2" data-toggle="tab">Name & Email</a></li>
-                <li id="age" class="disabled"><a href="#tab3" data-toggle="tab">Age & About You</a></li>
-                <li id="address" class="disabled"><a href="#tab4" data-toggle="tab">Address & Gender</a></li>
-                <li id="favorites" class="disabled"><a href="#tab5" data-toggle="tab">Favorites</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="tab-content">
-          <div class="tab-pane" id="tab1">
-            <p>Thank you for taking the time to participate in our survey!  Your input is very much appreciated.</p>
-            <p>To successfully complete the survey, you must provide answers to the questions on the <b>Name & Email</b> and <b>Age & About You</b> tabs.  We encourage you to complete questions on the Address & Gender and Favorites tabs as well, but they are optional.</p>
-            <p>Click on the <b>Finish</b> button to submit the survey when you are finished.</p>
-          </div>
-          <div class="tab-pane" id="tab2">
-            <table>
-              <tr><td class="left-column"><label>Name:</label></td><td class="right-column"><input id="name"></td></tr>
-              <tr><td class="left-column"><label>Email:</label></td><td class="right-column"><input id="email"></td></tr>
-            </table>
-          </div>
-          <div class="tab-pane" id="tab3">
-            <table>
-              <tr><td class="left-column"><label>Age:</label></td><td class="right-column"><input id="age"></td></tr>
-              <tr><td class="left-column"><label>About You:</label></td><td class="right-column"><textarea id="about_me" rows="7"></textarea></td></tr>
-            </table>
-          </div>
-          <div class="tab-pane" id="tab4">
-            <table>
-              <tr><td class="left-column"><label>Gender:</label></td><td class="right-column">            
-              <select id="gender">
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-              </select></td></tr>
-              <tr><td class="left-column"><label>Address:</label></td><td class="right-column"><textarea id="address" rows="5"></textarea></td></tr>
-            </table>
-          </div>
-          <div class="tab-pane" id="tab5">
-            <table>
-              <tr><td class="left-column"><label>Favorite Colors:</label></td><td class="right-column">
-                  <input type="checkbox"/>&nbsp;Black</a>
-                  <input type="checkbox"/>&nbsp;Blue</a>
-                  <input type="checkbox"/>&nbsp;Brown</a>
-                  <input type="checkbox"/>&nbsp;Green</a>
-                  <input type="checkbox"/>&nbsp;Orange</a>
-                  <input type="checkbox"/>&nbsp;Pink</a>
-                  <input type="checkbox"/>&nbsp;Purple</a>
-                  <input type="checkbox"/>&nbsp;Red</a>
-                  <input type="checkbox"/>&nbsp;White</a>
-                  <input type="checkbox"/>&nbsp;Yellow</a>
-              </td></tr>
-              <tr><td class="left-column"><label>Favorite Book:</label></td><td class="right-column"><input id="favorite_book"></td></tr>
-            </table>
-          </div>
-          <ul class="pager wizard">
-            <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
-            <li id="next" class="next"><a href="javascript:;">Start</a></li>
-            <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
+<div id='widget' class='container'>
+  <div id="rootwizard">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div>
+          <ul>
+            <li id="intro"><a href="#tab1" data-toggle="tab">Introduction</a></li>
+            <li id="name" class="disabled"><a href="#tab2" data-toggle="tab">Name & Email</a></li>
+            <li id="age" class="disabled"><a href="#tab3" data-toggle="tab">Age & About You</a></li>
+            <li id="address" class="disabled"><a href="#tab4" data-toggle="tab">Address & Gender</a></li>
+            <li id="favorites" class="disabled"><a href="#tab5" data-toggle="tab">Favorites</a></li>
           </ul>
         </div>
       </div>
-      </section>
     </div>
-    <script>
-      $(document).ready(function() {
-       	$('#rootwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
-      	  var $total = navigation.find('li').length;
-      	  var $current = index + 1;
-        }});
-
-	// When the Start button is clicked on the Intro tab, enable the other tabs and remove the intro tab
-	$("li#next > a").on("click", function() {
-            $("li#next > a").text("Next");
-            $("li#name").removeClass("disabled");
-            $("li#age").removeClass("disabled");
-            $("li#address").removeClass("disabled");
-            $("li#favorites").removeClass("disabled");
-            $("li#intro").remove();
-        });
-
-        $('#rootwizard .finish').click(function() {
-      	  alert('Finished!, Starting over!');
-      	  $('#rootwizard').find("a[href*='tab1']").trigger('click');
-        });
-
-	// This handler ensures that the Finish button is displayed only when we have the minimum values to complete the survey
-	function blur_handler() {
-	  var required_fields = ["input#name", "input#email", "input#age", "textarea#about_me"];
-	  var result = true;
-
-	  for (var i = 0; i < required_fields.length; i++) {
-	    if ($(required_fields[i]).val().length === 0) {
-	      result = false;
-	      break;
-	    }
-	  }
-
-	  if (result == true) {
-	    $('li#finish').removeClass('disabled');
-	  }
-	}
-	
-	$("input").blur(blur_handler);
-	$("textarea").blur(blur_handler);
-      }); 
-    </script>
-  </body>
-</html>
+    <div class="tab-content">
+      <div class="tab-pane" id="tab1">
+        <p>Thank you for taking the time to participate in our survey!  Your input is very much appreciated.</p>
+        <p>To successfully complete the survey, you must provide answers to the questions on the <b>Name & Email</b> and <b>Age & About You</b> tabs.  We encourage you to complete questions on the Address & Gender and Favorites tabs as well, but they are optional.</p>
+        <p>Click on the <b>Finish</b> button to submit the survey when you are finished.</p>
+      </div>
+      <div class="tab-pane" id="tab2">
+        <table>
+          <tr>
+            <td class="left-column"><label>Name:</label></td>
+            <td class="right-column"><input id="name"></td>
+          </tr>
+          <tr>
+            <td class="left-column"><label>Email:</label></td>
+            <td class="right-column"><input id="email"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="tab3">
+        <table>
+          <tr>
+            <td class="left-column"><label>Age:</label></td>
+            <td class="right-column"><input id="age"></td>
+          </tr>
+          <tr>
+            <td class="left-column"><label>About You:</label></td>
+            <td class="right-column"><textarea id="about_me" rows="7"></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="tab4">
+        <table>
+          <tr>
+            <td class="left-column"><label>Gender:</label></td>
+            <td class="right-column">
+              <select id="gender">
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="left-column"><label>Address:</label></td>
+            <td class="right-column"><textarea id="address" rows="5"></textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="tab-pane" id="tab5">
+        <table>
+          <tr>
+            <td class="left-column"><label>Favorite Colors:</label></td>
+            <td class="right-column">
+              <input type="checkbox"/>&nbsp;Black</a>
+              <input type="checkbox"/>&nbsp;Blue</a>
+              <input type="checkbox"/>&nbsp;Brown</a>
+              <input type="checkbox"/>&nbsp;Green</a>
+              <input type="checkbox"/>&nbsp;Orange</a>
+              <input type="checkbox"/>&nbsp;Pink</a>
+              <input type="checkbox"/>&nbsp;Purple</a>
+              <input type="checkbox"/>&nbsp;Red</a>
+              <input type="checkbox"/>&nbsp;White</a>
+              <input type="checkbox"/>&nbsp;Yellow</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="left-column"><label>Favorite Book:</label></td>
+            <td class="right-column"><input id="favorite_book"></td>
+          </tr>
+        </table>
+      </div>
+      <ul class="pager wizard">
+        <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
+        <li id="next" class="next"><a href="javascript:;">Start</a></li>
+        <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
+      </ul>
+    </div>
+  </div>
+  </section>
+</div>
