@@ -1,6 +1,6 @@
 import falcon
 from survey.models import db_close, db_init
-from survey.service import NewSurveyResource, SurveyResource
+from survey.service import NewSurveyResource, SurveyResource, LoaderResource, WidgetResource  # noqa
 
 
 class DBConnectionManager(object):
@@ -19,3 +19,7 @@ app = application = falcon.API(middleware=[
 app.add_route("/survey", NewSurveyResource())
 app.add_route("/survey/{id}", SurveyResource())
 app.add_route("/survey/{id}/finish", SurveyResource())
+
+# Static content that we could/should serve from nginx
+app.add_route("/loader", LoaderResource())
+app.add_route("/widget", WidgetResource())

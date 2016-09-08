@@ -1,4 +1,5 @@
 import json
+import os
 
 import falcon
 from peewee import IntegrityError
@@ -152,3 +153,25 @@ class SurveyResource(object):
                 resp.status = falcon.HTTP_500
                 resp.body = json.dumps(
                     {"error": "Unable to persist updated response"})
+
+
+class LoaderResource(object):
+
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'application/json'
+
+        file_path = os.path.join(os.environ["STATIC_CONTENT_PATH"], "loader.js")
+        with open(file_path, 'r') as f:
+            resp.body = f.read()
+
+
+class WidgetResource(object):
+
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+
+        file_path = os.path.join(os.environ["STATIC_CONTENT_PATH"], "widget.html")
+        with open(file_path, 'r') as f:
+            resp.body = f.read()
