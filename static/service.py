@@ -26,3 +26,9 @@ class WidgetResource(StaticResource):
 class StylesheetResource(StaticResource):
     content_type = "text/css"
     file_name = "stylesheet.css"
+
+
+class TestResource(StaticResource):
+    content_type = "text/html"
+    file_name = "test.html"
+
