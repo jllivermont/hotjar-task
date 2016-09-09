@@ -82,7 +82,7 @@ function _load_remote_css(url) {
 }
 
 function load_remote_css() {
-  var css_urls = ["https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css", "https://hotjar-task.herokuapp.com/sylesheet"];
+  var css_urls = ["https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css", "https://hotjar-task.herokuapp.com/stylesheet"];
   css_urls.map(_load_remote_css);
 }
 
