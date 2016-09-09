@@ -1,94 +1,113 @@
-<div id='widget' class='container'>
-  <div id="rootwizard">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div>
-          <ul>
-            <li id="intro"><a href="#tab1" data-toggle="tab">Introduction</a></li>
-            <li id="name" class="disabled"><a href="#tab2" data-toggle="tab">Name & Email</a></li>
-            <li id="age" class="disabled"><a href="#tab3" data-toggle="tab">Age & About You</a></li>
-            <li id="address" class="disabled"><a href="#tab4" data-toggle="tab">Address & Gender</a></li>
-            <li id="favorites" class="disabled"><a href="#tab5" data-toggle="tab">Favorites</a></li>
-          </ul>
-        </div>
+<div id="rootwizard">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div>
+        <ul class="nav nav-pills">
+          <li id="name" class=""><a href="file:///home/jlivermont/Desktop/test.html#tab2" data-toggle="tab" aria-expanded="false">Name &amp; Email</a></li>
+          <li id="age" class="active"><a href="file:///home/jlivermont/Desktop/test.html#tab3" data-toggle="tab" aria-expanded="true">Age &amp; About You</a></li>
+          <li id="address" class=""><a href="file:///home/jlivermont/Desktop/test.html#tab4" data-toggle="tab" aria-expanded="false">Address &amp; Gender</a></li>
+          <li id="favorites" class=""><a href="file:///home/jlivermont/Desktop/test.html#tab5" data-toggle="tab" aria-expanded="false">Favorites</a></li>
+        </ul>
       </div>
-    </div>
-    <div class="tab-content">
-      <div class="tab-pane" id="tab1">
-        <p>Thank you for taking the time to participate in our survey!  Your input is very much appreciated.</p>
-        <p>To successfully complete the survey, you must provide answers to the questions on the <b>Name & Email</b> and <b>Age & About You</b> tabs.  We encourage you to complete questions on the Address & Gender and Favorites tabs as well, but they are optional.</p>
-        <p>Click on the <b>Finish</b> button to submit the survey when you are finished.</p>
-      </div>
-      <div class="tab-pane" id="tab2">
-        <table>
-          <tr>
-            <td class="left-column"><label>Name:</label></td>
-            <td class="right-column"><input id="name"></td>
-          </tr>
-          <tr>
-            <td class="left-column"><label>Email:</label></td>
-            <td class="right-column"><input id="email"></td>
-          </tr>
-        </table>
-      </div>
-      <div class="tab-pane" id="tab3">
-        <table>
-          <tr>
-            <td class="left-column"><label>Age:</label></td>
-            <td class="right-column"><input id="age"></td>
-          </tr>
-          <tr>
-            <td class="left-column"><label>About You:</label></td>
-            <td class="right-column"><textarea id="about_me" rows="7"></textarea></td>
-          </tr>
-        </table>
-      </div>
-      <div class="tab-pane" id="tab4">
-        <table>
-          <tr>
-            <td class="left-column"><label>Gender:</label></td>
-            <td class="right-column">
-              <select id="gender">
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td class="left-column"><label>Address:</label></td>
-            <td class="right-column"><textarea id="address" rows="5"></textarea></td>
-          </tr>
-        </table>
-      </div>
-      <div class="tab-pane" id="tab5">
-        <table>
-          <tr>
-            <td class="left-column"><label>Favorite Colors:</label></td>
-            <td class="right-column">
-              <input type="checkbox"/>&nbsp;Black</a>
-              <input type="checkbox"/>&nbsp;Blue</a>
-              <input type="checkbox"/>&nbsp;Brown</a>
-              <input type="checkbox"/>&nbsp;Green</a>
-              <input type="checkbox"/>&nbsp;Orange</a>
-              <input type="checkbox"/>&nbsp;Pink</a>
-              <input type="checkbox"/>&nbsp;Purple</a>
-              <input type="checkbox"/>&nbsp;Red</a>
-              <input type="checkbox"/>&nbsp;White</a>
-              <input type="checkbox"/>&nbsp;Yellow</a>
-            </td>
-          </tr>
-          <tr>
-            <td class="left-column"><label>Favorite Book:</label></td>
-            <td class="right-column"><input id="favorite_book"></td>
-          </tr>
-        </table>
-      </div>
-      <ul class="pager wizard">
-        <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
-        <li id="next" class="next"><a href="javascript:;">Start</a></li>
-        <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
-      </ul>
     </div>
   </div>
-  </section>
-</div>
+  <div class="tab-content">
+    <div class="tab-pane" id="tab1">
+      <p>Thank you for taking the time to participate in our survey! Your input is very much appreciated.</p>
+      <p>To successfully complete the survey, you must provide answers to the questions on the <b>Name &amp; Email</b> and <b>Age &amp; About You</b> tabs. We encourage you to complete questions on the Address &amp; Gender and Favorites tabs as well, but they are optional.</p>
+      <p>Click on the <b>Finish</b> button to submit the survey when you are finished.</p>
+    </div>
+    <div class="tab-pane" id="tab2">
+      <table>
+        <tbody>
+          <tr>
+            <td class="left-column"><label class="field-desc">Name:</label></td>
+            <td class="right-column"><input id="name" class="text-input"></td>
+          </tr>
+          <tr>
+            <td class="left-column"><label class="field-desc">Email:</label></td>
+            <td class="right-column"><input id="email" class="text-input"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane active" id="tab3">
+      <table>
+        <tbody>
+          <tr>
+            <td class="left-column"><label class="field-desc">Age:</label></td>
+            <td class="right-column"><input id="age" class="text-input"></td>
+          </tr>
+          <tr>
+            <td class="left-column"><label class="field-desc">About You:</label></td>
+            <td class="right-column"><textarea id="about_me" rows="7" class="text-input"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane" id="tab4">
+      <table>
+        <tbody>
+          <tr>
+            <td class="left-column"><label class="field-desc">Gender:</label></td>
+            <td class="right-column chooser">
+              <table>
+                <tbody>
+                  <tr>
+                    <td><input type="radio" name="gender" value="female" checked><label class="list-item">Female</label></td>
+                    <td><input type="radio" name="gender" value="male"><label class="list-item">Male</label></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="left-column"><label class="field-desc">Address:</label></td>
+            <td class="right-column"><textarea id="address" rows="5" class="text-input"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane" id="tab5">
+      <table>
+        <tbody>
+          <tr>
+            <td class="left-column"><label class="field-desc">Favorite Colors:</label></td>
+            <td class="right-column chooser">
+              <table>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Black</label></td>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Blue</label></td>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Brown</label></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Green</label></td>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Orange</label></td>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Pink</label></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Purple</label></td>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Red</label></td>
+                    <td><input type="checkbox" name="colors"><label class="list-item">White</label></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" name="colors"><label class="list-item">Yellow</label></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="left-column"><label class="field-desc">Favorite Book:</label></td>
+            <td class="right-column"><input id="favorite_book" class="text-input"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="pager wizard">
+      <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
+      <li id="next" class="next"><a href="javascript:;">Next</a></li>
+      <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
+    </ul>
+  </div>
