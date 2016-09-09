@@ -1,6 +1,7 @@
 import falcon
 from survey.models import db_close, db_init
 from survey.service import NewSurveyResource, SurveyResource, LoaderResource, WidgetResource, StylesheetResource  # noqa
+from static.service import LoaderResource, WidgetResource, StylesheetResource  # noqa 
 
 
 class DBConnectionManager(object):
@@ -24,3 +25,4 @@ app.add_route("/survey/{id}/finish", SurveyResource())
 app.add_route("/loader", LoaderResource())
 app.add_route("/widget", WidgetResource())
 app.add_route("/stylesheet", StylesheetResource())
+
