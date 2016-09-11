@@ -13,22 +13,26 @@ class StaticResource(object):
             resp.body = f.read()
 
 
-class LoaderResource(StaticResource):
+class Loader(StaticResource):
     content_type = "application/json"
     file_name = "loader.js"
 
 
-class WidgetResource(StaticResource):
+class Survey(StaticResource):
+    content_type = "application/json"
+    file_name = "survey.js"
+
+
+class Widget(StaticResource):
     content_type = "text/html"
     file_name = "widget.html"
 
 
-class StylesheetResource(StaticResource):
+class Stylesheet(StaticResource):
     content_type = "text/css"
     file_name = "stylesheet.css"
 
 
-class TestResource(StaticResource):
+class Test(StaticResource):
     content_type = "text/html"
     file_name = "test.html"
-

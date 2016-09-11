@@ -1,12 +1,16 @@
+import os
 import pytest
+import sys
 
 from pytest_localserver.http import WSGIServer
-from api import app
 
 
 @pytest.yield_fixture
 def test_webserver(scope="session"):
-    server = WSGIServer(application=app)
+    sys.path.append((os.path.normpath(os.path.join(__file__, "..", ".."))))
+    import api
+
+    server = WSGIServer(application=api.app)
     server.start()
     yield server
     server.stop()

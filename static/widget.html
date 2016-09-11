@@ -3,10 +3,11 @@
     <div class="navbar-inner">
       <div>
         <ul class="nav nav-pills">
-          <li id="name" class=""><a href="file:///home/jlivermont/Desktop/test.html#tab2" data-toggle="tab" aria-expanded="false">Name &amp; Email</a></li>
-          <li id="age" class="active"><a href="file:///home/jlivermont/Desktop/test.html#tab3" data-toggle="tab" aria-expanded="true">Age &amp; About You</a></li>
-          <li id="address" class=""><a href="file:///home/jlivermont/Desktop/test.html#tab4" data-toggle="tab" aria-expanded="false">Address &amp; Gender</a></li>
-          <li id="favorites" class=""><a href="file:///home/jlivermont/Desktop/test.html#tab5" data-toggle="tab" aria-expanded="false">Favorites</a></li>
+          <li id="intro" class=""><a href="#tab1" data-toggle="tab">Introduction</a></li>
+          <li id="name" class="disabled"><a href="#tab2" data-toggle="tab">Name &amp; Email</a></li>
+          <li id="age" class="disabled"><a href="#tab3" data-toggle="tab">Age &amp; About You</a></li>
+          <li id="address" class="disabled"><a href="#tab4" data-toggle="tab">Address &amp; Gender</a></li>
+          <li id="favorites" class="disabled"><a href="#tab5" data-toggle="tab">Favorites</a></li>
         </ul>
       </div>
     </div>
@@ -22,11 +23,11 @@
         <tbody>
           <tr>
             <td class="left-column"><label class="field-desc">Name:</label></td>
-            <td class="right-column"><input id="name" class="text-input"></td>
+            <td class="right-column"><input id="name" class="text-input"></input></td>
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">Email:</label></td>
-            <td class="right-column"><input id="email" class="text-input"></td>
+            <td class="right-column"><input id="email" class="text-input"></input></td>
           </tr>
         </tbody>
       </table>
@@ -36,7 +37,7 @@
         <tbody>
           <tr>
             <td class="left-column"><label class="field-desc">Age:</label></td>
-            <td class="right-column"><input id="age" class="text-input"></td>
+            <td class="right-column"><input id="age" class="text-input"></input></td>
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">About You:</label></td>
@@ -54,8 +55,8 @@
               <table>
                 <tbody>
                   <tr>
-                    <td><input type="radio" name="gender" value="female" checked><label class="list-item">Female</label></td>
-                    <td><input type="radio" name="gender" value="male"><label class="list-item">Male</label></td>
+                    <td><input type="radio" name="gender" value="female"><label class="list-item">Female</label></input></td>
+                    <td><input type="radio" name="gender" value="male"><label class="list-item">Male</label></input></td>
                   </tr>
                 </tbody>
               </table>
@@ -77,22 +78,22 @@
               <table>
                 <tbody>
                   <tr>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Black</label></td>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Blue</label></td>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Brown</label></td>
+                    <td><input type="checkbox" name="colors" value="Black"><label class="list-item">Black</label></input></td>
+                    <td><input type="checkbox" name="colors" value="Blue"><label class="list-item">Blue</label></input></td>
+                    <td><input type="checkbox" name="colors" value="Brown"><label class="list-item">Brown</label></input></td>
                   </tr>
                   <tr>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Green</label></td>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Orange</label></td>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Pink</label></td>
+                    <td><input type="checkbox" name="colors" value="Green"><label class="list-item">Green</label></input></td>
+                    <td><input type="checkbox" name="colors" value="Orange"><label class="list-item">Orange</label></input></td>
+                    <td><input type="checkbox" name="colors" value="Pink"><label class="list-item">Pink</label></input></td>
                   </tr>
                   <tr>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Purple</label></td>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Red</label></td>
-                    <td><input type="checkbox" name="colors"><label class="list-item">White</label></td>
+                    <td><input type="checkbox" name="colors" value="Purple"><label class="list-item">Purple</label></input></td>
+                    <td><input type="checkbox" name="colors" value="Red"><label class="list-item">Red</label></input></td>
+                    <td><input type="checkbox" name="colors" value="White"><label class="list-item">White</label></input></td>
                   </tr>
                   <tr>
-                    <td><input type="checkbox" name="colors"><label class="list-item">Yellow</label></td>
+                    <td><input type="checkbox" name="colors" value="Yellow"><label class="list-item">Yellow</label></input></td>
                   </tr>
                 </tbody>
               </table>
@@ -100,14 +101,14 @@
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">Favorite Book:</label></td>
-            <td class="right-column"><input id="favorite_book" class="text-input"></td>
+            <td class="right-column"><input id="favorite_book" class="text-input"></input></td>
           </tr>
         </tbody>
       </table>
     </div>
     <ul class="pager wizard">
       <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
-      <li id="next" class="next"><a href="javascript:;">Next</a></li>
+      <li id="next" class="next"><a href="javascript:;">Start</a></li>
       <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
     </ul>
   </div>
