@@ -33,6 +33,21 @@ def get_response(id):
     return _convert_response_to_dict(resp)
 
 
+def get_all_responses():
+    """Fetches all SurveyResponses
+
+    Returns:
+        dict
+    """
+
+    responses = []
+
+    for resp in SurveyResponse.select():
+        responses.append(_convert_response_to_dict(resp))
+
+    return responses
+
+
 def create_response(data):
     """Creates a new SurveyResponse
 

@@ -183,3 +183,10 @@ def test_update_response_to_finish_unfinished_survey_returns_400(
     assert resp.status_code == 400
     assert "is missing field age; can't mark as finished" in resp.json()[
         "error"]
+
+
+def test_get_all_responses_returns_200(test_webserver):
+    resp = requests.get(url=test_webserver.url + "/surveys")
+
+    assert resp.status_code == 200
+    assert len(resp.json()) > 1

@@ -1,9 +1,9 @@
 import json
-import os
 
 import falcon
 from peewee import IntegrityError
-from survey.domain import create_response, get_response, update_response
+from survey.domain import (create_response, get_all_responses,  # noqa
+                           get_response, update_response)
 from survey.error import ValidationError
 from survey.models import SurveyResponse
 from survey.normalizer import normalize
@@ -87,6 +87,7 @@ class SurveyResource(object):
         Args:
             req (falcon.Request): HTTP request
             resp (falcon.Response): HTTP response
+            id (int): Primary key of row to return
 
         Returns:
             200: Survey response fetched successfully
@@ -100,6 +101,7 @@ class SurveyResource(object):
         if id is not None:
             try:
                 survey_response = get_response(id)
+
                 if survey_response is not None:
                     resp.status = falcon.HTTP_200
                     resp.body = json.dumps(survey_response)
@@ -153,3 +155,33 @@ class SurveyResource(object):
                 resp.status = falcon.HTTP_500
                 resp.body = json.dumps(
                     {"error": "Unable to persist updated response"})
+
+
+class AllSurveysResource(object):
+
+    def on_get(self, req, resp):
+        """Get details of all survey responses
+
+        Args:
+            req (falcon.Request): HTTP request
+            resp (falcon.Response): HTTP response
+
+        Returns:
+            200: Survey response fetched successfully
+            400: Invalid/malformed request from client
+            500: Server error
+        """
+
+        resp.content_type = "application/json"
+
+        try:
+            survey_response = get_all_responses()
+            if survey_response is not None:
+                resp.status = falcon.HTTP_200
+                resp.body = json.dumps(survey_response)
+            else:
+                raise RuntimeError()
+        except Exception:
+            resp.body = json.dumps(
+                {"error": "Unable to fetch responses from persistence"})
+            resp.status = falcon.HTTP_500
