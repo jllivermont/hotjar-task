@@ -15,7 +15,7 @@ def normalize(data):
     normalized_data = {}
 
     for key in data:
-        value = data[key]
+        value = str(data[key])
         key = key.lower()
 
         # Strip all fields and reduce multiple spaces to a single whitespace
@@ -24,7 +24,7 @@ def normalize(data):
 
         if key == "name":
             value = string.capwords(value)
-        elif key == "age":
+        elif key == "age" and len(value) > 0:
             value = int(value)
         elif key in ("gender", "favorite_colors"):
             value = value.lower()

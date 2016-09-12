@@ -26,8 +26,8 @@ def _validate(data, resp, mandatory_fields=None, forbidden_fields=None):
     except ValidationError as e:
         resp.body = json.dumps({"error": e.args[0]})
         resp.status = falcon.HTTP_400
-    except Exception:
-        resp.body = json.dumps({"error": "Unable to validate request payload"})
+    except Exception as e:
+        resp.body = json.dumps({"error": "Unable to validate request payload: {}".format(e.args[0])})
         resp.status = falcon.HTTP_400
 
 
@@ -129,7 +129,6 @@ class SurveyResource(object):
             500: Server error
         """
 
-        resp.content_type = "application/json"
         resp.status = falcon.HTTP_200
 
         id = _get_id(id, resp)

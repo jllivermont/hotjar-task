@@ -1,5 +1,6 @@
-import falcon
 import os
+
+import falcon
 
 
 class StaticResource(object):
@@ -36,3 +37,8 @@ class Stylesheet(StaticResource):
 class Test(StaticResource):
     content_type = "text/html"
     file_name = "test.html"
+
+
+class Report(StaticResource):
+    content_type = "text/html"
+    file_name = "report.html"

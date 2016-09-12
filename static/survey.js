@@ -12,14 +12,19 @@ var _SURVEY_SELECTORS = {
 var _SurveyEventHandler = {
   // Persists the latest form values into local storage
   "updateLocalStorage": function(values) {
+    var updated = false;
+
     if (typeof(Storage) !== undefined) {
       var persisted_values = localStorage.getItem("form-values");
       var current_values = JSON.stringify(values);
 
       if (current_values !== persisted_values) {
         localStorage.setItem("form-values", JSON.stringify(values));
+        updated = true;
       }
     }
+
+    return updated;
   },
 
   // Gathers up and returns all values
@@ -37,8 +42,6 @@ var _SurveyEventHandler = {
     values.favorite_colors = $(Survey.SELECTORS.favorite_colors + ":checked").map(function() {
       return this.value;
     }).get().join(",");
-
-    _SurveyEventHandler.updateLocalStorage(values);
 
     return values;
   },
@@ -61,6 +64,33 @@ var _SurveyEventHandler = {
     return result;
   },
 
+  // Create or update the state of the SurveyResponse resource on the back-end
+  "syncToBackend": function(values) {
+    if (localStorage.getItem("response-id") === null) {
+      values = JSON.stringify(values);
+      $.ajax({"url": "http://localhost:8000/survey", "method": "POST", "contentType":"application/json", "data": values,
+              "success": function(data, status, xhr) {  
+                localStorage.setItem("response-id", data.id);
+            },
+              "error": function(xhr, status, error) {  
+                console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
+            },
+      });
+    } else {
+      // The email field is an immutable field and the backend won't allow it to be mutated; don't send it
+      delete values.email;
+      values = JSON.stringify(values);
+
+      id = localStorage.getItem("response-id");
+      $.ajax({"url": "http://localhost:8000/survey/" + id, "method": "PUT", "contentType":"application/json", "data": values,
+              "error": function(xhr, status, error) {  
+		if (xhr.status != 200) {
+                  console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
+                }
+            },
+       });
+    }
+  },
 
   // Checks to see if Finish button should be displayed; persists current state of form
   "blurHandler": function() {
@@ -68,7 +98,39 @@ var _SurveyEventHandler = {
       $("li#finish").removeClass("disabled");
     }
 
-    _SurveyEventHandler.getFormValues();
+    var values = _SurveyEventHandler.getFormValues();
+
+    // Only send an update to the back-end if we have a name, an email and modified values
+    if ((_SurveyEventHandler.updateLocalStorage(values) === true) && (values.name.length > 0) && (values.email.length > 0)) {
+      _SurveyEventHandler.syncToBackend(values);
+    }
+  },
+
+  // When the user clicks on the Start/Continue button on the first tab
+  "onStartButtonClicked": function() {
+    $("li#next > a").text("Next");
+    $("div.navbar").show();
+    $("li#intro").remove();
+
+    if (_SurveyEventHandler.isFormFinishable() === true) {
+      $("li#finish").removeClass("disabled");
+    }
+  },
+
+  // When the user clicks on the Finish button
+  "onFinishButtonClicked": function() {
+    // Send one final update to the back-end with the latest values and marking the survey as finished
+    var values = _SurveyEventHandler.getFormValues();
+    values.finished = true;
+    _SurveyEventHandler.syncToBackend(values);
+
+    if (typeof(Storage) !== undefined) {
+      localStorage.removeItem("form-values");
+      localStorage.removeItem("response-id");
+      localStorage.setItem("survey-finished", true);
+    }
+
+    $("div.popup-survey").hide();
   },
 };
 
@@ -120,59 +182,13 @@ var _SurveyBootstrapper = {
     return values_set;
   },
 
-  // Check if this user has already completed the survey
-  "isSurveyAlreadyFinished": function() {
-    result = false;
-    if (typeof(Storage) !== undefined) {
-      if (localStorage.getItem("survey-finished") !== null) {
-        result = true;
-      }
-    }
-
-    return result;
-  },
-
   // If we found values in local storage, inform the user that they are continuing the survey
   "setWelcomeBackMessage": function() {
-    $("li#intro > a").text("Welcome Back!");   
     $("div#tab1").empty();
+    $("div#tab1").append("<h2 style='margin-top: 40px; margin-bottom: 40px;'><b>Welcome Back!</b></h2>");
     $("div#tab1").append("<p>You didn't complete the survey before, so we've saved the data you input during your last session.</p>");
     $("div#tab1").append("<p>You can continue filling out the survey right where you left off last time.</p>");
     $("li#next > a").text("Continue Survey");
-  },
-
-  // If we find that the user has already completed the survey, thank them and send them away
-  "setAlreadyFinishedMessage": function() {
-    $("li#intro > a").text("Survey Already Completed");   
-    $("div#tab1").empty();
-    $("div#tab1").append("<p>You have already completed this survey.  There's nothing more to do.</p>");
-    $("div#tab1").append("<p>Thanks!!</p>");
-    $("li#next > a").hide();
-    $("li#finish").removeClass("disabled");
-  },
-
-  // When the user clicks on the Start/Continue button on the first tab
-  "onStartButtonClicked": function() {
-    $("li#next > a").text("Next");
-    $("li#name").removeClass("disabled");
-    $("li#age").removeClass("disabled");
-    $("li#address").removeClass("disabled");
-    $("li#favorites").removeClass("disabled");
-    $("li#intro").remove();
-
-    if (_SurveyEventHandler.isFormFinishable() === true) {
-      $("li#finish").removeClass("disabled");
-    }
-  },
-
-  // When the user clicks on the Finish button
-  "onFinishButtonClicked": function() {
-    if (typeof(Storage) !== undefined) {
-      localStorage.removeItem("form-values");
-      localStorage.setItem("survey-finished", true);
-    }
-
-    $("div.popup-survey").hide();
   },
 
   // When the widget has finished loading 
@@ -186,18 +202,15 @@ var _SurveyBootstrapper = {
       });
 
       // Register event handlers for the Next and Finish buttons
-      $("li#next > a").on("click", _SurveyBootstrapper.onStartButtonClicked);
-      $("#rootwizard .finish").on("click", _SurveyBootstrapper.onFinishButtonClicked);
+      $("li#next > a").on("click", Survey.EventHandler.onStartButtonClicked);
+      $("#rootwizard .finish").on("click", Survey.EventHandler.onFinishButtonClicked);
 
       // Register blur event handlers for blur events
       $("input").blur(Survey.EventHandler.blurHandler);
       $("textarea").blur(Survey.EventHandler.blurHandler);
 
-      // Check to see if this user has already completed a survey
-      if (_SurveyBootstrapper.isSurveyAlreadyFinished()) {
-        _SurveyBootstrapper.setAlreadyFinishedMessage();
       // Populate the form with any previously-entered values
-      } else if (_SurveyBootstrapper.populateFormFromLocalStorage()) {
+      if (_SurveyBootstrapper.populateFormFromLocalStorage()) {
         _SurveyBootstrapper.setWelcomeBackMessage();
       }
     });

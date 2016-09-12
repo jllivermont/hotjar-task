@@ -1,5 +1,6 @@
 import falcon
-from static.service import Loader, Stylesheet, Survey, Test, Widget  # noqa
+from static.service import (Loader, Report, Stylesheet, Survey, Test,  # noqa
+                            Widget)
 from survey.models import db_close, db_init
 from survey.service import (AllSurveysResource, NewSurveyResource,  # noqa
                             SurveyResource)
@@ -28,3 +29,4 @@ app.add_route("/widget.html", Widget())
 app.add_route("/survey.js", Survey())
 app.add_route("/stylesheet.css", Stylesheet())
 app.add_route("/test.html", Test())
+app.add_route("/report.html", Report())

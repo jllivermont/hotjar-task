@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Survey Response Report</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+<style>
+table {
+    font-family: Sans-serif;
+    text-align: center; 
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+th {
+    font-weight: bold;
+    background-color: #ff5050;
+    font-size: 24px;
+    color: black;
+    padding-top:3px; 
+    padding-bottom: 3px;
+    padding-left: 5px; 
+    padding-right: 5px;
+    border: 3px solid grey;
+}
+td {
+  border-collapse: collapse;
+  padding: 5px;
+  margin: 10px;
+    border: 3px solid grey;
+}
+td:nth-child(odd) {
+  background-color: #ffe6e6;
+}
+td:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+<div ng-app="surveyResponseReport" ng-controller="surveyResponseCtrl"> 
+
+<table>
+  <tr>
+    <th><a href="#" ng-click="orderByField='name'; reverseSort = !reverseSort">Name</th>
+    <th>Email</th>
+    <th>Age</th>
+    <th>About Me</th>
+    <th>Gender</th>
+    <th>Address</th>
+    <th>Favorite Book</th>
+    <th>Favorite Colors</th>
+    <th>Finished</th>
+  </tr>
+  <tr ng-repeat="x in responses|orderBy:orderByField:reverseSort">
+    <td><b>{{ x.name }}</b></td>
+    <td><a href="mailto:{{ x.email }}">{{ x.email }}</a></td>
+    <td>{{ x.age }}</td>
+    <td>{{ x.about_me }}</td>
+    <td>{{ x.gender }}</td>
+    <td>{{ x.address }}</td>
+    <td>{{ x.favorite_book }}</td>
+    <td>{{ x.favorite_colors }}</td>
+    <td>{{ x.finished }}</td>
+  </tr>
+</table>
+
+</div>
+
+<script>
+var app = angular.module("surveyResponseReport", []);
+app.controller("surveyResponseCtrl", function($scope, $http) {
+    $http.get("http://localhost:8000/surveys")
+    .then(function (response) {$scope.responses = response.data;});
+
+    $scope.orderByField = "id";
+    $scope.reverseSort = true;
+});
+</script>`
+</body>
+</html>
+

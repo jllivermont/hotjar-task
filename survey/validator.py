@@ -63,7 +63,8 @@ def _validate_email(email):
 
 
 def _validate_age(age):
-    _check_in_range("age", age, 3, 125)
+    if isinstance(age, int):
+        _check_in_range("age", age, 3, 125)
 
 
 def _validate_about_me(about_me):
@@ -75,7 +76,8 @@ def _validate_address(address):
 
 
 def _validate_gender(gender):
-    _check_in_enum("gender", gender, GENDERS)
+    if len(gender) > 0:
+        _check_in_enum("gender", gender, GENDERS)
 
 
 def _validate_favorite_book(favorite_book):
@@ -83,14 +85,16 @@ def _validate_favorite_book(favorite_book):
 
 
 def _validate_favorite_colors(favorite_colors):
-    if "," in favorite_colors:
-        favorite_colors = favorite_colors.split(",")
+    if len(favorite_colors) > 0:
+        if "," in favorite_colors:
+            favorite_colors = favorite_colors.split(",")
 
-    if isinstance(favorite_colors, list) or isinstance(favorite_colors, tuple):
-        for color in favorite_colors:
-            _check_in_enum("favorite_colors", color, COLORS)
-    else:
-        _check_in_enum("favorite_colors", favorite_colors, COLORS)
+        if isinstance(favorite_colors, list) or isinstance(
+                favorite_colors, tuple):
+            for color in favorite_colors:
+                _check_in_enum("favorite_colors", color, COLORS)
+        else:
+            _check_in_enum("favorite_colors", favorite_colors, COLORS)
 
 
 def _validate_finished(finished):
