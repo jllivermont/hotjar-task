@@ -68,7 +68,7 @@ var _SurveyEventHandler = {
   "createSurveyResponse": function(values) {
     values = JSON.stringify(values);
     $.ajax({
-      "url": "http://localhost:8000/survey",
+      "url": "http://hotjar-task.herokuapp.com/survey",
       "method": "POST",
       "contentType": "application/json",
       "data": values,
@@ -89,7 +89,7 @@ var _SurveyEventHandler = {
 
     id = localStorage.getItem("response-id");
     $.ajax({
-      "url": "http://localhost:8000/survey/" + id,
+      "url": "http://hotjar-task.herokuapp.com/survey/" + id,
       "method": "PUT",
       "contentType": "application/json",
       "data": values,

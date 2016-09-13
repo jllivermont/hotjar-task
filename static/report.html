@@ -106,7 +106,7 @@
 
     var app = angular.module("surveyResponseReport", []);
     app.controller("surveyResponseCtrl", function($scope, $http) {
-      $http.get("http://localhost:8000/surveys")
+      $http.get("http://hotjar-task.herokuapp.com/surveys")
         .then(function(response) {
           $scope.responses = response.data;
 

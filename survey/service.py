@@ -28,7 +28,8 @@ def _validate(data, resp, mandatory_fields=None, forbidden_fields=None):
         resp.body = json.dumps({"error": e.args[0]})
         resp.status = falcon.HTTP_400
     except Exception as e:
-        resp.body = json.dumps({"error": "Unable to validate request payload: {}".format(e.args[0])})
+        msg = "Unable to validate request payload: {}".format(e.args[0])
+        resp.body = json.dumps({"error": msg})
         resp.status = falcon.HTTP_400
 
 

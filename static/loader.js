@@ -14,7 +14,7 @@ var _SurveyLoader = {
   // Load survey widget into popup div and bootstrap
   "onJqueryLoaded": function() {
     jQuery(document).ready(function($) {
-      $("div.popup-survey").load("http://localhost:8000/widget.html", Survey.Bootstrapper.onWidgetLoaded);
+      $("div.popup-survey").load("http://hotjar-task.herokuapp.com/widget.html", Survey.Bootstrapper.onWidgetLoaded);
     });
   },
 
@@ -41,13 +41,13 @@ var _SurveyLoader = {
   "loadRemoteScripts": function() {
     _SurveyLoader.createScript("https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js", null);
     _SurveyLoader.createScript("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js", null);
-    _SurveyLoader.createScript("http://localhost:8000/survey.js", null);
+    _SurveyLoader.createScript("http://hotjar-task.herokuapp.com/survey.js", null);
     _SurveyLoader.createScript("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap-wizard/1.2/jquery.bootstrap.wizard.min.js", _SurveyLoader.onJqueryLoaded);
   },
 
   // Load stylesheets
   "loadRemoteCSS": function() {
-    var css_urls = ["https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css", "http://localhost:8000/stylesheet.css"];
+    var css_urls = ["https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css", "http://hotjar-task.herokuapp.com/stylesheet.css"];
     for (var index in css_urls) {
       var url = css_urls[index];
       var link = document.createElement("link");
