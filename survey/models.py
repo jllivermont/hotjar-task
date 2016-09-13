@@ -17,8 +17,8 @@ prod_db = PostgresqlDatabase(
     host=os.environ.get("DB_HOST"),
 )
 
-db = prod_db if "USE_PROD_DB" in os.environ else test_db
-db_type = "prod" if "USE_PROD_DB" in os.environ else "test"
+db = prod_db if "IS_PROD" in os.environ else test_db
+db_type = "prod" if "IS_PROD" in os.environ else "test"
 
 
 class SurveyResponse(Model):

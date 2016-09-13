@@ -1,4 +1,5 @@
 table { width: 100%; }
+textarea { resize: none; }
 div.navbar { display: none; }
 div.tab-content { margin-top: 25px; }
 ul.nav { margin-top: 20px; }

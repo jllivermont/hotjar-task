@@ -205,15 +205,6 @@ var _SurveyBootstrapper = {
     return values_set;
   },
 
-  // If we found values in local storage, inform the user that they are continuing the survey
-  "setWelcomeBackMessage": function() {
-    $("div#tab1").empty();
-    $("div#tab1").append("<h2 style='margin-top: 40px; margin-bottom: 40px;'><b>Welcome Back!</b></h2>");
-    $("div#tab1").append("<p>You didn't complete the survey before, so we've saved the data you input during your last session.</p>");
-    $("div#tab1").append("<p>You can continue filling out the survey right where you left off last time.</p>");
-    $("li#next > a").text("Continue Survey");
-  },
-
   // When the widget has finished loading 
   "onWidgetLoaded": function() {
     $(document).ready(function() {
@@ -221,6 +212,7 @@ var _SurveyBootstrapper = {
         onTabShow: function(tab, navigation, index) {
           var $total = navigation.find("li").length;
           var $current = index + 1;
+          localStorage.setItem("current-tab", (index + 1));
         }
       });
 
@@ -234,7 +226,10 @@ var _SurveyBootstrapper = {
 
       // Populate the form with any previously-entered values
       if (_SurveyBootstrapper.populateFormFromLocalStorage()) {
-        _SurveyBootstrapper.setWelcomeBackMessage();
+        current_tab = localStorage.getItem("current-tab");
+        if (current_tab !== null) {
+          $("li#tab" + (current_tab + 1)).addClass("active");
+        }
       }
     });
   },
