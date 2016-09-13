@@ -64,31 +64,52 @@ var _SurveyEventHandler = {
     return result;
   },
 
+  // Create a new SurveyResponse
+  "createSurveyResponse": function(values) {
+    values = JSON.stringify(values);
+    $.ajax({
+      "url": "http://localhost:8000/survey",
+      "method": "POST",
+      "contentType": "application/json",
+      "data": values,
+      "success": function(data, status, xhr) {
+        localStorage.setItem("response-id", data.id);
+      },
+      "error": function(xhr, status, error) {
+        console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
+      },
+    });
+  },
+
+  // Update an existing SurveyResponse
+  "updateSurveyResponse": function(values) {
+    // The email field is an immutable field and the backend won't allow it to be mutated; don't send it
+    delete values.email;
+    values = JSON.stringify(values);
+
+    id = localStorage.getItem("response-id");
+    $.ajax({
+      "url": "http://localhost:8000/survey/" + id,
+      "method": "PUT",
+      "contentType": "application/json",
+      "data": values,
+      "error": function(xhr, status, error) {
+        if (xhr.status != 200) {
+          console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
+        }
+      },
+    });
+  },
+
   // Create or update the state of the SurveyResponse resource on the back-end
   "syncToBackend": function(values) {
-    if (localStorage.getItem("response-id") === null) {
-      values = JSON.stringify(values);
-      $.ajax({"url": "http://localhost:8000/survey", "method": "POST", "contentType":"application/json", "data": values,
-              "success": function(data, status, xhr) {  
-                localStorage.setItem("response-id", data.id);
-            },
-              "error": function(xhr, status, error) {  
-                console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
-            },
-      });
-    } else {
-      // The email field is an immutable field and the backend won't allow it to be mutated; don't send it
-      delete values.email;
-      values = JSON.stringify(values);
-
-      id = localStorage.getItem("response-id");
-      $.ajax({"url": "http://localhost:8000/survey/" + id, "method": "PUT", "contentType":"application/json", "data": values,
-              "error": function(xhr, status, error) {  
-		if (xhr.status != 200) {
-                  console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
-                }
-            },
-       });
+    // Only send an update to the back-end if we have a name, an email and modified values
+    if ((_SurveyEventHandler.updateLocalStorage(values) === true) && (values.name.length > 0) && (values.email.length > 0)) {
+      if (localStorage.getItem("response-id") === null) {
+        _SurveyEventHandler.createSurveyResponse(values);
+      } else {
+        _SurveyEventHandler.updateSurveyResponse(values);
+      }
     }
   },
 
@@ -98,12 +119,7 @@ var _SurveyEventHandler = {
       $("li#finish").removeClass("disabled");
     }
 
-    var values = _SurveyEventHandler.getFormValues();
-
-    // Only send an update to the back-end if we have a name, an email and modified values
-    if ((_SurveyEventHandler.updateLocalStorage(values) === true) && (values.name.length > 0) && (values.email.length > 0)) {
-      _SurveyEventHandler.syncToBackend(values);
-    }
+    _SurveyEventHandler.syncToBackend(_SurveyEventHandler.getFormValues());
   },
 
   // When the user clicks on the Start/Continue button on the first tab
@@ -115,6 +131,13 @@ var _SurveyEventHandler = {
     if (_SurveyEventHandler.isFormFinishable() === true) {
       $("li#finish").removeClass("disabled");
     }
+  },
+
+  // When the user clicks on the close button in the upper right-hand corner
+  "onCloseButtonClicked": function() {
+    var values = _SurveyEventHandler.getFormValues();
+    _SurveyEventHandler.syncToBackend(values);
+    $("div.popup-survey").hide();
   },
 
   // When the user clicks on the Finish button
@@ -166,17 +189,17 @@ var _SurveyBootstrapper = {
     var values_set = false;
 
     if (typeof(Storage) !== undefined) {
-    var persisted_values = localStorage.getItem("form-values");
-    if (persisted_values !== null) {
-      var values = JSON.parse(persisted_values);
+      var persisted_values = localStorage.getItem("form-values");
+      if (persisted_values !== null) {
+        var values = JSON.parse(persisted_values);
 
-      for (var key in values) {
-        value = values[key];
-        if (_SurveyBootstrapper.setFormValue(key, value) === true) {
-          values_set = true;
+        for (var key in values) {
+          value = values[key];
+          if (_SurveyBootstrapper.setFormValue(key, value) === true) {
+            values_set = true;
+          }
         }
       }
-    }
     }
 
     return values_set;
@@ -216,7 +239,7 @@ var _SurveyBootstrapper = {
     });
   },
 };
- 
+
 // Plumb these sub-namespaces into the global Survey namespace
 Survey.Bootstrapper = Survey.Bootstrapper || _SurveyBootstrapper;
 Survey.EventHandler = Survey.EventHandler || _SurveyEventHandler;

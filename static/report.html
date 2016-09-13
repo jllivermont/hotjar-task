@@ -1,84 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Survey Response Report</title>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
-<style>
-table {
-    font-family: Sans-serif;
-    text-align: center; 
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-    border-collapse: collapse;
-}
-th {
-    font-weight: bold;
-    background-color: #ff5050;
-    font-size: 24px;
-    color: black;
-    padding-top:3px; 
-    padding-bottom: 3px;
-    padding-left: 5px; 
-    padding-right: 5px;
-    border: 3px solid grey;
-}
-td {
-  border-collapse: collapse;
-  padding: 5px;
-  margin: 10px;
-    border: 3px solid grey;
-}
-td:nth-child(odd) {
-  background-color: #ffe6e6;
-}
-td:nth-child(even) {
-  background-color: #ffffff;
-}
-</style>
+  <title>Survey Response Report</title>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+  <style>
+    h1 { font-weight: bold; font-size: 48px; }
+    table { font-family: Sans-serif; text-align: center; width: 80%; margin-left: auto; margin-right: auto; margin-top: 30px; border-collapse: collapse; border-radius: 15px; }
+    th { font-weight: bold; background-color: #ff5050; font-size: 24px; color: black; padding-top: 3px; padding-bottom: 3px; padding-left: 5px; padding-right: 5px; border: 3px solid grey; }
+    td { border-collapse: collapse; padding: 5px; margin: 10px; border: 3px solid grey; }
+    td:nth-child(odd) { background-color: #ffe6e6; }
+    td:nth-child(even) { background-color: #ffffff; }
+  </style>
 </head>
+
 <body>
-<div ng-app="surveyResponseReport" ng-controller="surveyResponseCtrl"> 
+  <div ng-app="surveyResponseReport" ng-controller="surveyResponseCtrl">
 
-<table>
-  <tr>
-    <th><a href="#" ng-click="orderByField='name'; reverseSort = !reverseSort">Name</th>
-    <th>Email</th>
-    <th>Age</th>
-    <th>About Me</th>
-    <th>Gender</th>
-    <th>Address</th>
-    <th>Favorite Book</th>
-    <th>Favorite Colors</th>
-    <th>Finished</th>
-  </tr>
-  <tr ng-repeat="x in responses|orderBy:orderByField:reverseSort">
-    <td><b>{{ x.name }}</b></td>
-    <td><a href="mailto:{{ x.email }}">{{ x.email }}</a></td>
-    <td>{{ x.age }}</td>
-    <td>{{ x.about_me }}</td>
-    <td>{{ x.gender }}</td>
-    <td>{{ x.address }}</td>
-    <td>{{ x.favorite_book }}</td>
-    <td>{{ x.favorite_colors }}</td>
-    <td>{{ x.finished }}</td>
-  </tr>
-</table>
+    <h1>Survey Responses</h1>
+    <table>
+      <tr>
+        <th><a href="#" ng-click="orderByField='name'; reverseSort = !reverseSort">Name<span ng-show="orderByField=='name'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='email'; reverseSort = !reverseSort">Email<span ng-show="orderByField=='email'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='age'; reverseSort = !reverseSort">Age<span ng-show="orderByField=='age'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='about_me'; reverseSort = !reverseSort">About Me<span ng-show="orderByField=='about_me'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='gender'; reverseSort = !reverseSort">Gender<span ng-show="orderByField=='gender'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='address'; reverseSort = !reverseSort">Address<span ng-show="orderByField=='address'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='favorite_book'; reverseSort = !reverseSort">Favorite Book<span ng-show="orderByField=='favorite_book'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='favorite_colors'; reverseSort = !reverseSort">Favorite Colors<span ng-show="orderByField=='favorite_colors'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+        <th><a href="#" ng-click="orderByField='finished'; reverseSort = !reverseSort">Finished<span ng-show="orderByField=='finished'"><span ng-show="!reverseSort"><b>↑</b></span><span ng-show="reverseSort"><b>↓</b></span></span></a></th>
+      </tr>
+      <tr ng-repeat="x in responses|orderBy:orderByField:reverseSort">
+        <td><b>{{ x.name }}</b></td>
+        <td><a href="mailto:{{ x.email }}">{{ x.email }}</a></td>
+        <td>{{ x.age }}</td>
+        <td>{{ x.about_me }}</td>
+        <td>{{ x.gender }}</td>
+        <td>{{ x.address }}</td>
+        <td>{{ x.favorite_book }}</td>
+        <td>{{ x.favorite_colors }}</td>
+        <td>{{ x.finished }}</td>
+      </tr>
+    </table>
+  </div>
 
-</div>
+  <script>
+    var app = angular.module("surveyResponseReport", []);
+    app.controller("surveyResponseCtrl", function($scope, $http) {
+      $http.get("http://localhost:8000/surveys")
+        .then(function(response) {
+          $scope.responses = response.data;
+        });
 
-<script>
-var app = angular.module("surveyResponseReport", []);
-app.controller("surveyResponseCtrl", function($scope, $http) {
-    $http.get("http://localhost:8000/surveys")
-    .then(function (response) {$scope.responses = response.data;});
-
-    $scope.orderByField = "id";
-    $scope.reverseSort = true;
-});
-</script>`
+      $scope.orderByField = "id";
+      $scope.reverseSort = true;
+    });
+  </script>
 </body>
 </html>
-

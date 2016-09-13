@@ -16,7 +16,7 @@ var _SurveyLoader = {
     jQuery(document).ready(function($) {
       $("div.popup-survey").load("http://localhost:8000/widget.html", Survey.Bootstrapper.onWidgetLoaded);
     });
-  },  
+  },
 
   // Load scripts and optionally invoke callback when script load has finished
   "createScript": function(url, callback) {
