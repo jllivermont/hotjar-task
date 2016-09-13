@@ -7,6 +7,7 @@ from survey.domain import (create_response, get_all_responses,  # noqa
 from survey.error import ValidationError
 from survey.models import SurveyResponse
 from survey.normalizer import normalize
+from survey.notifier import notify
 from survey.validator import validate
 
 
@@ -70,6 +71,7 @@ class NewSurveyResource(object):
             try:
                 id = create_response(data)
                 resp.body = json.dumps({"id": id})
+                notify("create", json.dumps(get_response(id)))
             except IntegrityError:
                 resp.body = json.dumps(
                     {"error": "This user has already submitted a Survey"})
@@ -143,6 +145,7 @@ class SurveyResource(object):
         if resp.status == falcon.HTTP_200:
             try:
                 update_response(id, data)
+                notify("update", json.dumps(get_response(id)))
             except SurveyResponse.DoesNotExist:
                 resp.body = json.dumps(
                     {"error": "Specified ID does not exist"})

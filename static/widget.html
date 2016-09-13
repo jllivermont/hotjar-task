@@ -4,9 +4,7 @@
     <div class="navbar-inner">
       <div>
         <ul class="nav nav-pills">
-          <li id="intro">
-            <a href="#tab1" data-toggle="tab"></a>
-          </li>
+          <li id="intro"><a href="#tab1" data-toggle="tab">x</a></li>
           <li id="name"><a href="#tab2" data-toggle="tab">Name &amp; Email</a></li>
           <li id="age"><a href="#tab3" data-toggle="tab">Age &amp; About You</a></li>
           <li id="address"><a href="#tab4" data-toggle="tab">Address &amp; Gender</a></li>
@@ -27,12 +25,12 @@
         <tbody>
           <tr>
             <td class="left-column"><label class="field-desc">Name:</label></td>
-            <td class="right-column"><input id="name" class="text-input"></input>
+            <td class="right-column"><input id="name" class="text-input" placeholder="First & Last Name"></input>
             </td>
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">Email:</label></td>
-            <td class="right-column"><input id="email" class="text-input"></input>
+            <td class="right-column"><input id="email" class="text-input" placeholder="Email Address"></input>
             </td>
           </tr>
         </tbody>
@@ -43,12 +41,12 @@
         <tbody>
           <tr>
             <td class="left-column"><label class="field-desc">Age:</label></td>
-            <td class="right-column"><input id="age" class="text-input"></input>
+            <td class="right-column"><input id="age" class="text-input" placeholder="Current Age"></input>
             </td>
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">About You:</label></td>
-            <td class="right-column"><textarea id="about_me" rows="7" class="text-input"></textarea></td>
+            <td class="right-column"><textarea id="about_me" rows="7" class="text-input" placeholder="Short Description About You"></textarea></td>
           </tr>
         </tbody>
       </table>
@@ -73,7 +71,7 @@
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">Address:</label></td>
-            <td class="right-column"><textarea id="address" rows="5" class="text-input"></textarea></td>
+            <td class="right-column"><textarea id="address" rows="5" class="text-input" placeholder="Your Home Address"></textarea></td>
           </tr>
         </tbody>
       </table>
@@ -111,6 +109,7 @@
                     </td>
                   </tr>
                   <tr>
+                    <td></td>
                     <td><input type="checkbox" name="colors" value="Yellow"><label class="list-item">Yellow</label></input>
                     </td>
                   </tr>
@@ -120,140 +119,7 @@
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">Favourite Book:</label></td>
-            <td class="right-column"><input id="favorite_book" class="text-input"></input>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <ul class="pager wizard">
-      <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
-      <li id="next" class="next"><a href="javascript:;">Start</a></li>
-      <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
-    </ul>
-  </div><div id="rootwizard">
-  <a href="javascript:void(0)" class="close-button" onclick="Survey.EventHandler.onCloseButtonClicked()">×</a>
-  <div class="navbar">
-    <div class="navbar-inner">
-      <div>
-        <ul class="nav nav-pills">
-          <li id="intro">
-            <a href="#tab1" data-toggle="tab"></a>
-          </li>
-          <li id="name"><a href="#tab2" data-toggle="tab">Name &amp; Email</a></li>
-          <li id="age"><a href="#tab3" data-toggle="tab">Age &amp; About You</a></li>
-          <li id="address"><a href="#tab4" data-toggle="tab">Address &amp; Gender</a></li>
-          <li id="favorites"><a href="#tab5" data-toggle="tab">Favourites</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="tab-content">
-    <div class="tab-pane" id="tab1">
-      <h2 style="margin-bottom: 20px;"><b>Welcome!</b></h2>
-      <p>Thank you for taking the time to participate in our survey! Your input is very much appreciated.</p>
-      <p>To successfully complete the survey, you must provide answers to the questions on the <b>Name &amp; Email</b> and <b>Age &amp; About You</b> tabs. We encourage you to complete questions on the <b>Address &amp; Gender</b> and <b>Favourites</b> tabs as well, but they are optional.</p>
-      <p>Click on the <b>Finish</b> button to submit the survey when you are finished. The Finish button will appear when enough data has been entered for the survey to be submitted.</p>
-    </div>
-    <div class="tab-pane" id="tab2">
-      <table>
-        <tbody>
-          <tr>
-            <td class="left-column"><label class="field-desc">Name:</label></td>
-            <td class="right-column"><input id="name" class="text-input"></input>
-            </td>
-          </tr>
-          <tr>
-            <td class="left-column"><label class="field-desc">Email:</label></td>
-            <td class="right-column"><input id="email" class="text-input"></input>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="tab-pane active" id="tab3">
-      <table>
-        <tbody>
-          <tr>
-            <td class="left-column"><label class="field-desc">Age:</label></td>
-            <td class="right-column"><input id="age" class="text-input"></input>
-            </td>
-          </tr>
-          <tr>
-            <td class="left-column"><label class="field-desc">About You:</label></td>
-            <td class="right-column"><textarea id="about_me" rows="7" class="text-input"></textarea></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="tab-pane" id="tab4">
-      <table>
-        <tbody>
-          <tr>
-            <td class="left-column"><label class="field-desc">Gender:</label></td>
-            <td class="right-column chooser">
-              <table>
-                <tbody>
-                  <tr>
-                    <td><input type="radio" name="gender" value="female"><label class="list-item">Female</label></input>
-                    </td>
-                    <td><input type="radio" name="gender" value="male"><label class="list-item">Male</label></input>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td class="left-column"><label class="field-desc">Address:</label></td>
-            <td class="right-column"><textarea id="address" rows="5" class="text-input"></textarea></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="tab-pane" id="tab5">
-      <table>
-        <tbody>
-          <tr>
-            <td class="left-column"><label class="field-desc">Favourite Colors:</label></td>
-            <td class="right-column chooser">
-              <table>
-                <tbody>
-                  <tr>
-                    <td><input type="checkbox" name="colors" value="Black"><label class="list-item">Black</label></input>
-                    </td>
-                    <td><input type="checkbox" name="colors" value="Blue"><label class="list-item">Blue</label></input>
-                    </td>
-                    <td><input type="checkbox" name="colors" value="Brown"><label class="list-item">Brown</label></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="colors" value="Green"><label class="list-item">Green</label></input>
-                    </td>
-                    <td><input type="checkbox" name="colors" value="Orange"><label class="list-item">Orange</label></input>
-                    </td>
-                    <td><input type="checkbox" name="colors" value="Pink"><label class="list-item">Pink</label></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="colors" value="Purple"><label class="list-item">Purple</label></input>
-                    </td>
-                    <td><input type="checkbox" name="colors" value="Red"><label class="list-item">Red</label></input>
-                    </td>
-                    <td><input type="checkbox" name="colors" value="White"><label class="list-item">White</label></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><input type="checkbox" name="colors" value="Yellow"><label class="list-item">Yellow</label></input>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td class="left-column"><label class="field-desc">Favourite Book:</label></td>
-            <td class="right-column"><input id="favorite_book" class="text-input"></input>
+            <td class="right-column"><input id="favorite_book" class="text-input" placeholder="Your Favourite Book"></input>
             </td>
           </tr>
         </tbody>

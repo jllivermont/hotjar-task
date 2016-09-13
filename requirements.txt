@@ -3,6 +3,7 @@ flake8==2.4.1
 gunicorn==19.6.0
 peewee==2.8.3
 psycopg2==2.6.1
+pusher>=1.5
 pytest>=3.0.2
 pytest-localserver>=0.3.6
 requests>=2.10.0

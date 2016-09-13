@@ -1,16 +1,70 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Survey Response Report</title>
   <meta charset="utf-8">
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+  <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-pusher/0.0.14/angular-pusher.min.js"></script> -->
   <style>
-    h1 { font-weight: bold; font-size: 48px; }
-    table { font-family: Sans-serif; text-align: center; width: 80%; margin-left: auto; margin-right: auto; margin-top: 30px; border-collapse: collapse; border-radius: 15px; }
-    th { font-weight: bold; background-color: #ff5050; font-size: 24px; color: black; padding-top: 3px; padding-bottom: 3px; padding-left: 5px; padding-right: 5px; border: 3px solid grey; }
-    td { border-collapse: collapse; padding: 5px; margin: 10px; border: 3px solid grey; }
-    td:nth-child(odd) { background-color: #ffe6e6; }
-    td:nth-child(even) { background-color: #ffffff; }
+    h1 {
+      font-weight: bold;
+      font-size: 48px;
+      text-align: center
+    }
+    
+    table {
+      font-family: Sans-serif;
+      text-align: center;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 30px;
+      border-collapse: collapse;
+      border-radius: 15px;
+    }
+    
+    th {
+      font-weight: bold;
+      background-color: #ff3636;
+      font-size: 24px;
+      color: black;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      padding-left: 5px;
+      padding-right: 5px;
+      border: 3px solid grey;
+    }
+    
+    td {
+      border-collapse: collapse;
+      padding: 5px;
+      margin: 10px;
+      border: 3px solid grey;
+    }
+    
+    td:nth-child(odd) {
+      background-color: #f1f1f1;
+    }
+    
+    td:nth-child(even) {
+      background-color: #ffffff;
+    }
+    
+    tr:hover td {
+      background-color: #ffff99;
+    }
+    
+    .finished {
+      color: green
+    }
+    
+    .unfinished {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -39,22 +93,45 @@
         <td>{{ x.address }}</td>
         <td>{{ x.favorite_book }}</td>
         <td>{{ x.favorite_colors }}</td>
-        <td>{{ x.finished }}</td>
+        <td ng-class="{'false':'unfinished', 'true':'finished'}[x.finished]">{{ x.finished }}</td>
       </tr>
     </table>
   </div>
 
   <script>
+    var pusher = new Pusher('f1021d0e7d6298c5d23d', {
+      cluster: 'eu',
+      encrypted: true
+    });
+
     var app = angular.module("surveyResponseReport", []);
     app.controller("surveyResponseCtrl", function($scope, $http) {
       $http.get("http://localhost:8000/surveys")
         .then(function(response) {
           $scope.responses = response.data;
+
+          var channel = pusher.subscribe('response-updates');
+          channel.bind('create', function(data) {
+            $scope.responses.push(data);
+            $scope.$apply();
+          });
+          channel.bind('update', function(data) {
+            // an item was updated. find it in our list and update it.
+            for (var i = 0; i < $scope.responses.length; i++) {
+              if ($scope.responses[i].id === data.id) {
+                $scope.responses[i] = data;
+                $scope.$apply();
+                break;
+              }
+            }
+          });
         });
 
       $scope.orderByField = "id";
       $scope.reverseSort = true;
+
     });
   </script>
 </body>
+
 </html>
