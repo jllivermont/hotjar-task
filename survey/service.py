@@ -19,10 +19,10 @@ def _decode(req, resp):
         resp.status = falcon.HTTP_500
 
 
-def _validate(data, resp, mandatory_fields=None, forbidden_fields=None):
+def _validate(data, resp, mandatory_fields=None):
     try:
         data = normalize(data)
-        validate(data, mandatory_fields, forbidden_fields)
+        validate(data, mandatory_fields)
         return data
     except ValidationError as e:
         resp.body = json.dumps({"error": e.args[0]})
@@ -139,9 +139,7 @@ class SurveyResource(object):
             # Decode the request payload
             data = _decode(req, resp)
             if data is not None:
-                # Normalize and validate the input data
-                forbidden_fields = ("email",)
-                data = _validate(data, resp, forbidden_fields=forbidden_fields)
+                data = _validate(data, resp)
 
         if resp.status == falcon.HTTP_200:
             try:
@@ -155,6 +153,8 @@ class SurveyResource(object):
                 resp.status = falcon.HTTP_400
                 resp.body = json.dumps({"error": e.args[0]})
             except Exception:
+                import traceback
+                traceback.print_exc()
                 resp.status = falcon.HTTP_500
                 resp.body = json.dumps(
                     {"error": "Unable to persist updated response"})

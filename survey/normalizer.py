@@ -24,8 +24,11 @@ def normalize(data):
 
         if key == "name":
             value = string.capwords(value)
-        elif key == "age" and len(value) > 0:
-            value = int(value)
+        elif key == "age":
+            if value is not None and len(value) > 0:
+                value = int(value)
+            else:
+                value = None
         elif key in ("gender", "favorite_colors"):
             value = value.lower()
 

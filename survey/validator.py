@@ -120,28 +120,16 @@ def _validate_mandatory_fields(data, required_fields):
             raise ValidationError("Missing mandatory field {}".format(field))
 
 
-def _validate_forbidden_fields(data, forbidden_fields):
-    """Ensure that that any forbidden fields are NOT in the input data"""
-    for field in forbidden_fields:
-        if field in data:
-            raise ValidationError(
-                "Field {} is not allowed for this operation".format(field))
-
-
-def validate(data, required_fields=None, forbidden_fields=None):
+def validate(data, required_fields=None):
     """Validates each key-value pair
 
     Args:
         data (dict): Incoming data from request
         required_fields (list): Mandatory fields
-        forbidden_fields (list): Forbidden fields
     """
 
     if required_fields is not None:
         _validate_mandatory_fields(data, required_fields)
-
-    if forbidden_fields is not None:
-        _validate_forbidden_fields(data, forbidden_fields)
 
     for key, value in data.items():
         _validate_field(key, value)

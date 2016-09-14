@@ -1,14 +1,14 @@
 <div id="rootwizard">
-  <a href="javascript:void(0)" class="close-button" onclick="Survey.EventHandler.onCloseButtonClicked()">×</a>
+  <span href="javascript:void(0)" id="close-button" style="cursor:pointer;" class="close-button" onclick="Survey.EventHandler.onCloseButtonClicked()">✖</span>
   <div class="navbar">
     <div class="navbar-inner">
       <div>
         <ul class="nav nav-pills">
-          <li id="intro"><a href="#tab1" data-toggle="tab">x</a></li>
-          <li id="name"><a href="#tab2" data-toggle="tab">Name &amp; Email</a></li>
-          <li id="age"><a href="#tab3" data-toggle="tab">Age &amp; About You</a></li>
-          <li id="address"><a href="#tab4" data-toggle="tab">Address &amp; Gender</a></li>
-          <li id="favorites"><a href="#tab5" data-toggle="tab">Favourites</a></li>
+          <li id="nav1"><a href="#tab1" data-toggle="tab">x</a></li>
+          <li id="nav2"><a href="#tab2" data-toggle="tab">Name & Email</a></li>
+          <li id="nav3"><a href="#tab3" data-toggle="tab">Age & About Me</a></li>
+          <li id="nav4"><a href="#tab4" data-toggle="tab">Gender & Address</a></li>
+          <li id="nav5"><a href="#tab5" data-toggle="tab">Favourites</a></li>
         </ul>
       </div>
     </div>
@@ -30,7 +30,7 @@
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">Email:</label></td>
-            <td class="right-column"><input id="email" class="text-input" placeholder="Email Address"></input>
+            <td class="right-column"><input id="email" class="text-input" placeholder="Your Email Address"></input>
             </td>
           </tr>
         </tbody>
@@ -41,12 +41,12 @@
         <tbody>
           <tr>
             <td class="left-column"><label class="field-desc">Age:</label></td>
-            <td class="right-column"><input id="age" class="text-input" placeholder="Current Age"></input>
+            <td class="right-column"><select id="age"></select>
             </td>
           </tr>
           <tr>
             <td class="left-column"><label class="field-desc">About You:</label></td>
-            <td class="right-column"><textarea id="about_me" rows="7" class="text-input" placeholder="Short Description About You"></textarea></td>
+            <td class="right-column"><textarea id="about_me" rows="6" class="text-input" placeholder="Short Description About You"></textarea></td>
           </tr>
         </tbody>
       </table>
@@ -126,7 +126,7 @@
       </table>
     </div>
     <ul class="pager wizard">
-      <li id="previous" class="previous"><a href="javascript:;">Previous</a></li>
+      <li id="previous" class="previous"><a href="javascript:;">◄</a></li>
       <li id="next" class="next"><a href="javascript:;">Start</a></li>
       <li id="finish" class="finish disabled"><a href="javascript:;">Finish</a></li>
     </ul>

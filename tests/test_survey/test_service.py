@@ -132,7 +132,7 @@ def test_update_response_returns_200_on_success(test_webserver):
     assert updated_response["favorite_colors"] == "blue,green,brown"
 
 
-def test_update_response_with_email_returns_400(test_webserver):
+def test_update_response_with_email_returns_200(test_webserver):
     # Create survey
     input_dict = {"name": "Elmer Fudd", "email": "elmer@looney.org"}
     resp = requests.post(
@@ -152,9 +152,12 @@ def test_update_response_with_email_returns_400(test_webserver):
         json=input_dict,
         headers=REQUEST_HEADERS)
 
-    assert resp.status_code == 400
-    assert resp.json() == {
-        'error': 'Field email is not allowed for this operation'}
+    # Fetch and assert survey
+    resp = requests.get(test_webserver.url + "/survey/" + id)
+    updated_response = resp.json()
+    assert resp.status_code == 200
+    assert updated_response["name"] == "Daffy Duck"
+    assert updated_response["email"] == "daffy@looney.org"
 
 
 def test_update_response_to_finish_unfinished_survey_returns_400(

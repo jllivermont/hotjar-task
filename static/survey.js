@@ -1,7 +1,7 @@
 var _SURVEY_SELECTORS = {
   "name": "input#name",
   "email": "input#email",
-  "age": "input#age",
+  "age": "select#age",
   "about_me": "textarea#about_me",
   "gender": "input[name='gender']",
   "address": "textarea#address",
@@ -9,7 +9,61 @@ var _SURVEY_SELECTORS = {
   "favorite_colors": "input[name='colors']",
 };
 
-var _SurveyEventHandler = {
+// Manages model state both locally and with the backend
+var _SurveyResponseManager = {
+  // Create a new SurveyResponse
+  "createSurveyResponse": function(values) {
+    $.ajax({
+      "url": "http://hotjar-task.herokuapp.com/survey",
+      "method": "POST",
+      "contentType": "application/json",
+      "data": values,
+      "success": function(data, status, xhr) {
+        localStorage.setItem("response-id", data.id);
+      },
+      "error": function(xhr, status, error) {
+        console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
+      },
+    });
+  },
+
+  // Update an existing SurveyResponse
+  "updateSurveyResponse": function(values) {
+    id = localStorage.getItem("response-id");
+    $.ajax({
+      "url": "http://hotjar-task.herokuapp.com/survey/" + id,
+      "method": "PUT",
+      "contentType": "application/json",
+      "data": values,
+      "error": function(xhr, status, error) {
+        if (xhr.status != 200) {
+          console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
+        }
+      },
+    });
+  },
+
+  // Create or update the state of the SurveyResponse resource on the back-end
+  "syncToBackend": function(finished) {
+    values = _SurveyResponseManager.getFormValues();
+
+    // If the finished parameter is set, add a finished attribute to the values
+    if (finished) {
+      values.finished = true;
+    }
+
+    // Only send an update to the back-end if we have a name, an email and modified values
+    if ((_SurveyResponseManager.updateLocalStorage(values) === true) && (values.name.length > 0) && (values.email.length > 0)) {
+      values = JSON.stringify(values);
+
+      if (localStorage.getItem("response-id") === null) {
+        _SurveyResponseManager.createSurveyResponse(values);
+      } else {
+        _SurveyResponseManager.updateSurveyResponse(values);
+      }
+    }
+  },
+
   // Persists the latest form values into local storage
   "updateLocalStorage": function(values) {
     var updated = false;
@@ -43,9 +97,71 @@ var _SurveyEventHandler = {
       return this.value;
     }).get().join(",");
 
+    if (values.age === null) {
+      values.age = "";
+    }
+
     return values;
   },
+};
 
+// Manages event handling 
+var _SurveyEventHandler = {
+  // Checks to see if Finish button should be displayed; persists current state of form
+  "blurHandler": function() {
+    if (Survey.Controller.isFormFinishable() === true) {
+      $("li#finish").removeClass("disabled");
+    } else {
+      $("li#finish").addClass("disabled");
+    }
+
+    Survey.ResponseManager.syncToBackend(false);
+  },
+
+  // When the user clicks on the Start/Continue button on the first tab
+  "onStartButtonClicked": function() {
+    Survey.Controller.removeIntroTab();
+    Survey.Controller.checkFinishButton();
+
+    Survey.EventHandler.registerHandlers();
+    $("span#close-button").show();
+  },
+
+  // When the user clicks on the close button in the upper right-hand corner
+  "onCloseButtonClicked": function() {
+    Survey.ResponseManager.syncToBackend(false);
+    $("div.popup-survey").hide();
+  },
+
+  // When the user clicks on the Finish button
+  "onFinishButtonClicked": function() {
+    // Send one final update to the back-end with the latest values and marking the survey as finished
+    Survey.ResponseManager.syncToBackend(true);
+
+    if (typeof(Storage) !== undefined) {
+      localStorage.removeItem("form-values");
+      localStorage.removeItem("response-id");
+      localStorage.removeItem("current-tab");
+      localStorage.setItem("survey-finished", true);
+    }
+
+    $("div.popup-survey").hide();
+  },
+
+  // Registers all event handlers
+  "registerHandlers": function() {
+    // Register event handler for the Finish button
+    $("#rootwizard .finish").on("click", _SurveyEventHandler.onFinishButtonClicked);
+
+    // Register blur event handlers
+    $("input").blur(_SurveyEventHandler.blurHandler);
+    $("textarea").blur(_SurveyEventHandler.blurHandler);
+    $("select").blur(_SurveyEventHandler.blurHandler);
+  },
+};
+
+
+var _SurveyController = {
   // Determines if enough values have been provided for the form to be submitted
   "isFormFinishable": function() {
     var required_field_keys = ["name", "email", "age", "about_me"];
@@ -54,8 +170,9 @@ var _SurveyEventHandler = {
     for (var i = 0; i < required_field_keys.length; i++) {
       var key_name = required_field_keys[i];
       var selector = Survey.SELECTORS[key_name];
+      var value = $(selector).val();
 
-      if ($(selector).val().length === 0) {
+      if ((value === null) || (value.length === 0)) {
         result = false;
         break;
       }
@@ -64,105 +181,42 @@ var _SurveyEventHandler = {
     return result;
   },
 
-  // Create a new SurveyResponse
-  "createSurveyResponse": function(values) {
-    values = JSON.stringify(values);
-    $.ajax({
-      "url": "http://hotjar-task.herokuapp.com/survey",
-      "method": "POST",
-      "contentType": "application/json",
-      "data": values,
-      "success": function(data, status, xhr) {
-        localStorage.setItem("response-id", data.id);
-      },
-      "error": function(xhr, status, error) {
-        console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
-      },
-    });
-  },
-
-  // Update an existing SurveyResponse
-  "updateSurveyResponse": function(values) {
-    // The email field is an immutable field and the backend won't allow it to be mutated; don't send it
-    delete values.email;
-    values = JSON.stringify(values);
-
-    id = localStorage.getItem("response-id");
-    $.ajax({
-      "url": "http://hotjar-task.herokuapp.com/survey/" + id,
-      "method": "PUT",
-      "contentType": "application/json",
-      "data": values,
-      "error": function(xhr, status, error) {
-        if (xhr.status != 200) {
-          console.error("Status code " + xhr.status + " and error '" + status + "' received; reason: " + error);
-        }
-      },
-    });
-  },
-
-  // Create or update the state of the SurveyResponse resource on the back-end
-  "syncToBackend": function(values) {
-    // Only send an update to the back-end if we have a name, an email and modified values
-    if ((_SurveyEventHandler.updateLocalStorage(values) === true) && (values.name.length > 0) && (values.email.length > 0)) {
-      if (localStorage.getItem("response-id") === null) {
-        _SurveyEventHandler.createSurveyResponse(values);
-      } else {
-        _SurveyEventHandler.updateSurveyResponse(values);
-      }
-    }
-  },
-
-  // Checks to see if Finish button should be displayed; persists current state of form
-  "blurHandler": function() {
-    if (_SurveyEventHandler.isFormFinishable() === true) {
-      $("li#finish").removeClass("disabled");
-    }
-
-    _SurveyEventHandler.syncToBackend(_SurveyEventHandler.getFormValues());
-  },
-
-  // When the user clicks on the Start/Continue button on the first tab
-  "onStartButtonClicked": function() {
-    $("li#next > a").text("Next");
+  // Removes the Introduction tab and updates navigation buttons
+  "removeIntroTab": function() {
+    $("li#next > a").text("►");
     $("div.navbar").show();
-    $("li#intro").remove();
+    $("li#nav1").remove();
+    $("div#tab1").remove();
+  },
 
-    if (_SurveyEventHandler.isFormFinishable() === true) {
+  // Navigates to the tab the user was last on
+  "navigateToLastTab": function() {
+    // Remove the active tag from all tabs and tab headers
+    $("ul.nav li").removeClass("active");
+    $("div.tab-content div").removeClass("active");
+
+    current_tab = localStorage.getItem("current-tab");
+    if (current_tab !== null) {
+      $("li#nav" + (Number(current_tab) + 1)).addClass("active");
+      $("div#tab" + (Number(current_tab) + 1)).addClass("active");
+    }
+  },
+
+  // Displays the Finish button if enough of the survey has been completed
+  "checkFinishButton": function() {
+    if (_SurveyController.isFormFinishable() === true) {
       $("li#finish").removeClass("disabled");
     }
-  },
-
-  // When the user clicks on the close button in the upper right-hand corner
-  "onCloseButtonClicked": function() {
-    var values = _SurveyEventHandler.getFormValues();
-    _SurveyEventHandler.syncToBackend(values);
-    $("div.popup-survey").hide();
-  },
-
-  // When the user clicks on the Finish button
-  "onFinishButtonClicked": function() {
-    // Send one final update to the back-end with the latest values and marking the survey as finished
-    var values = _SurveyEventHandler.getFormValues();
-    values.finished = true;
-    _SurveyEventHandler.syncToBackend(values);
-
-    if (typeof(Storage) !== undefined) {
-      localStorage.removeItem("form-values");
-      localStorage.removeItem("response-id");
-      localStorage.setItem("survey-finished", true);
-    }
-
-    $("div.popup-survey").hide();
   },
 };
+
 
 var _SurveyBootstrapper = {
   // Sets values from local storage into the form
   "setFormValue": function(key, value) {
     var value_set = false;
 
-    if (value.length > 0) {
+    if ((value !== null) && (value.length > 0)) {
       if (key == "gender") {
         $(Survey.SELECTORS[key] + "[value='" + value.toLowerCase() + "']").attr("checked", true);
         value_set = true;
@@ -205,37 +259,60 @@ var _SurveyBootstrapper = {
     return values_set;
   },
 
-  // When the widget has finished loading 
+  // Populate the options for the age <select>
+  "populateAges": function() {
+    var select = document.getElementById("age");
+    var option = document.createElement("option");
+    option.text = "Choose Your Age";
+    option.value = "placeholder";
+    option.selected = true;
+    option.disabled = true;
+    select.appendChild(option);
+
+    for (var i = 5; i <= 130; i++) {
+      option = document.createElement("option");
+      option.text = i;
+      option.value = i;
+      select.appendChild(option);
+    }
+  },
+
   "onWidgetLoaded": function() {
     $(document).ready(function() {
+      // Populate the age <select>
+      _SurveyBootstrapper.populateAges();
+
+      // Populate the form with any previously-entered values
+      if (_SurveyBootstrapper.populateFormFromLocalStorage()) {
+        Survey.Controller.removeIntroTab();
+
+        // Navigate to the last tab the user was on
+        Survey.Controller.navigateToLastTab();
+        Survey.Controller.checkFinishButton();
+
+        // Enable handlers
+        Survey.EventHandler.registerHandlers();
+      } else {
+        $("span#close-button").hide();
+        $("li#next > a").on("click", Survey.EventHandler.onStartButtonClicked);
+      }
+
       $("#rootwizard").bootstrapWizard({
         onTabShow: function(tab, navigation, index) {
           var $total = navigation.find("li").length;
           var $current = index + 1;
+
+          // Every time we have a tab change, persist the current tab
           localStorage.setItem("current-tab", (index + 1));
         }
       });
-
-      // Register event handlers for the Next and Finish buttons
-      $("li#next > a").on("click", Survey.EventHandler.onStartButtonClicked);
-      $("#rootwizard .finish").on("click", Survey.EventHandler.onFinishButtonClicked);
-
-      // Register blur event handlers for blur events
-      $("input").blur(Survey.EventHandler.blurHandler);
-      $("textarea").blur(Survey.EventHandler.blurHandler);
-
-      // Populate the form with any previously-entered values
-      if (_SurveyBootstrapper.populateFormFromLocalStorage()) {
-        current_tab = localStorage.getItem("current-tab");
-        if (current_tab !== null) {
-          $("li#tab" + (current_tab + 1)).addClass("active");
-        }
-      }
     });
   },
 };
 
 // Plumb these sub-namespaces into the global Survey namespace
-Survey.Bootstrapper = Survey.Bootstrapper || _SurveyBootstrapper;
-Survey.EventHandler = Survey.EventHandler || _SurveyEventHandler;
 Survey.SELECTORS = Survey.SELECTORS || _SURVEY_SELECTORS;
+Survey.EventHandler = Survey.EventHandler || _SurveyEventHandler;
+Survey.ResponseManager = Survey.ResponseManager || _SurveyResponseManager;
+Survey.Controller = Survey.Controller || _SurveyController;
+Survey.Bootstrapper = Survey.Bootstrapper || _SurveyBootstrapper;
