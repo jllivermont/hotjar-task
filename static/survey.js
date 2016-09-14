@@ -62,6 +62,9 @@ var _SurveyResponseManager = {
         _SurveyResponseManager.updateSurveyResponse(values);
       }
     }
+
+    // Since we're finished, remove the response from local storage 
+    localStorage.removeItem("response-id");
   },
 
   // Persists the latest form values into local storage
@@ -140,7 +143,6 @@ var _SurveyEventHandler = {
 
     if (typeof(Storage) !== undefined) {
       localStorage.removeItem("form-values");
-      localStorage.removeItem("response-id");
       localStorage.removeItem("current-tab");
       localStorage.setItem("survey-finished", true);
     }
