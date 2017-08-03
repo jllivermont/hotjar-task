@@ -1,6 +1,3 @@
-# Intro
-The goal of this project was to develop an embeddable survey widget and the full stack to support it.  I chose to use a lot of frameworks and tools that I have been meaning to investigate personally while undertaking this task.  While I've looked at Peewee, Falcon, AngularJS and Pusher briefly at various points in the past, I've never used them, so I figured that this was the perfect opportunity to do so.  Also, even though I've supported Heroku environments in my work, I've never set up a Heroku project from scratch, so that was good as well.  The whole project has presented me with the opportunity to not only show case my skill set and good work patterns, but also expand my own knowledge and tool belt.
-
 # Quickstart
 Here is an example of how a survey response can be created, queried, updated and completed using command line curl:
 
